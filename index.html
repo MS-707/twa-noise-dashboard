@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mytra — TWA Noise Exposure Assessment</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 24V8l8 10 8-10v16' fill='none' stroke='%236C2BD9' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<title>TWA Noise Exposure Assessment</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%236C2BD9' stroke-width='2'/%3E%3Cpath d='M10 20 Q16 8 22 20' fill='none' stroke='%236C2BD9' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
@@ -579,12 +579,12 @@ svg text { font-family: 'Roboto', sans-serif; }
   <div class="site-header-inner">
     <a class="logo" href="#">
       <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-        <path d="M4 26V6l8 12.5L20 6v20" stroke="#6C2BD9" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M20 6l8 12.5" stroke="#6C2BD9" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+        <circle cx="16" cy="16" r="14" stroke="#6C2BD9" stroke-width="2"/>
+        <path d="M8 20 Q16 6 24 20" stroke="#6C2BD9" stroke-width="2.5" stroke-linecap="round" fill="none"/>
       </svg>
-      <span class="logo-text">MYTRA<span class="logo-dot">.</span></span>
+      <span class="logo-text">TWA<span class="logo-dot">.</span></span>
     </a>
-    <span class="header-meta">Environmental Health &amp; Safety</span>
+    <span class="header-meta">Noise Exposure Assessment</span>
   </div>
 </div>
 
@@ -593,7 +593,6 @@ svg text { font-family: 'Roboto', sans-serif; }
   <div class="hero-inner">
     <h1>TWA Noise Exposure Assessment</h1>
     <div class="subtitle">Construction Site &mdash; California &bull; February 11&ndash;13, 2026 &bull; 2,926,709 readings analyzed</div>
-    <div class="finding-badge finding-safe">All OSHA TWA values below 85 dBA Action Level &mdash; Hearing Conservation Program not required</div>
     <div class="tab-bar">
       <button class="tab-btn active" onclick="switchTab('assessment')">Assessment</button>
       <button class="tab-btn" onclick="switchTab('experimental')">Advanced Visualizations</button>
@@ -767,7 +766,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 <div class="page">
   <div class="footer">
     Analysis performed February 19, 2026 &bull; Equipment: PCB 130f21 microphones, Dewesoft IOLite 8xACC DAQ &bull; A-weighted (dBA) &bull; OSHA 5 dB exchange rate
-    <br>Powered by <a href="https://mytra.ai" target="_blank">Mytra.ai</a>
+    <br><span style="opacity:0.7">Note: All OSHA TWA values below 85 dBA Action Level &mdash; Hearing Conservation Program not required per 29 CFR 1910.95</span>
   </div>
 </div>
 
@@ -1191,7 +1190,7 @@ function initExperimental() {
     const container = d3.select('#ridgeline');
     const margin = { top: 30, right: 30, bottom: 50, left: 150 };
     const width = 900 - margin.left - margin.right;
-    const rowHeight = 60, overlap = 1.6;
+    const rowHeight = 80, overlap = 2.2;
     const height = RIDGE_DATA.length * rowHeight;
     const svg = container.append('svg').attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).attr('width', '100%').append('g').attr('transform', `translate(${margin.left},${margin.top})`);
     const x = d3.scaleLinear().domain([50, 120]).range([0, width]);
