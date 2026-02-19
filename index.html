@@ -577,13 +577,6 @@ svg text { font-family: 'Roboto', sans-serif; }
 <!-- ═══ SITE HEADER ═══ -->
 <div class="site-header">
   <div class="site-header-inner">
-    <a class="logo" href="#">
-      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-        <circle cx="16" cy="16" r="14" stroke="#6C2BD9" stroke-width="2"/>
-        <path d="M8 20 Q16 6 24 20" stroke="#6C2BD9" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-      </svg>
-      <span class="logo-text">TWA<span class="logo-dot">.</span></span>
-    </a>
     <span class="header-meta">Noise Exposure Assessment</span>
   </div>
 </div>
@@ -1190,7 +1183,7 @@ function initExperimental() {
     const container = d3.select('#ridgeline');
     const margin = { top: 30, right: 30, bottom: 50, left: 150 };
     const width = 900 - margin.left - margin.right;
-    const rowHeight = 80, overlap = 2.2;
+    const rowHeight = 90, overlap = 1.3;
     const height = RIDGE_DATA.length * rowHeight;
     const svg = container.append('svg').attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).attr('width', '100%').append('g').attr('transform', `translate(${margin.left},${margin.top})`);
     const x = d3.scaleLinear().domain([50, 120]).range([0, width]);
@@ -1275,7 +1268,7 @@ function initExperimental() {
     const container = d3.select(containerId);
     const margin = { top: 30, right: 20, bottom: 40, left: 70 };
     const dates = [...new Set(data.map(d => d.date))].sort();
-    const cellW = 2, cellH = 40;
+    const cellW = 3, cellH = 80;
     const minMoD = d3.min(data, d => d.minuteOfDay), maxMoD = d3.max(data, d => d.minuteOfDay);
     const minuteRange = maxMoD - minMoD + 1;
     const width = minuteRange * cellW, height = dates.length * cellH;
