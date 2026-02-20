@@ -203,6 +203,35 @@ body {
   vertical-align: middle;
   margin-left: 8px;
   cursor: help;
+  position: relative;
+}
+.ts-badge::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.4;
+  padding: 8px 12px;
+  border-radius: 6px;
+  white-space: normal;
+  width: max-content;
+  max-width: 280px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.ts-badge:hover::after,
+.ts-badge:focus::after {
+  opacity: 1;
 }
 .ts-verified {
   background: var(--safe-light);
@@ -761,6 +790,134 @@ svg text { font-family: 'Roboto', sans-serif; }
   margin-bottom: 12px;
 }
 
+/* ═══ NON-TECHNICAL GUIDE ═══ */
+.guide-hero {
+  background: var(--safe-light);
+  border: 1px solid rgba(22,163,74,0.15);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.guide-hero h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--safe);
+  margin-bottom: 8px;
+}
+.guide-hero p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 680px;
+  margin: 0 auto;
+}
+.guide-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+}
+.guide-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.guide-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.guide-card p:last-child { margin-bottom: 0; }
+.guide-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.guide-icon-safe { background: var(--safe-light); color: var(--safe); }
+.guide-icon-info { background: var(--purple-light); color: var(--purple); }
+.guide-icon-note { background: var(--caution-light); color: var(--caution); }
+.guide-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+@media (max-width: 640px) { .guide-comparison { grid-template-columns: 1fr; } }
+.guide-level {
+  background: var(--bg-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 16px 20px;
+  text-align: center;
+}
+.guide-level .guide-level-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.guide-level .guide-level-value {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.guide-level .guide-level-context {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.guide-scope {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-top: 24px;
+}
+.guide-scope h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.guide-scope ul {
+  list-style: none;
+  padding: 0;
+}
+.guide-scope li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  padding: 4px 0;
+  padding-left: 20px;
+  position: relative;
+}
+.guide-scope li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
 /* ═══ FOCUS & ACCESSIBILITY ═══ */
 .tab-btn:focus-visible,
 .date-btn:focus-visible,
@@ -808,6 +965,7 @@ svg text { font-family: 'Roboto', sans-serif; }
       <button id="tab-assessment-btn" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-assessment" data-tab="assessment" onclick="switchTab('assessment')">Assessment</button>
       <button id="tab-experimental-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-experimental" data-tab="experimental" onclick="switchTab('experimental')">Advanced Visualizations</button>
       <button id="tab-methodology-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-methodology" data-tab="methodology" onclick="switchTab('methodology')">Methodology &amp; Verification</button>
+      <button id="tab-guide-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-guide" data-tab="guide" onclick="switchTab('guide')">What This Means for You</button>
     </div>
   </div>
 </div>
@@ -820,7 +978,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="loc-grid">
       <div class="loc-card bullpen">
-        <div class="loc-name">Office / Bullpen Area <span class="ts-badge ts-verified" title="Recording timestamps embedded in data files by hardware">Verified Timestamps</span></div>
+        <div class="loc-name">Office / Bullpen Area <span class="ts-badge ts-verified" data-tip="Recording timestamps embedded in data files by hardware — clock times are accurate" tabindex="0">Verified Timestamps</span></div>
         <div class="loc-desc">Worker staging &amp; coordination &mdash; ambient exposure from nearby construction</div>
         <div class="metrics-row">
           <div class="metric"><div class="value" id="bp-twa">--</div><div class="label">Avg TWA <span class="unit">dBA</span></div></div>
@@ -830,7 +988,7 @@ svg text { font-family: 'Roboto', sans-serif; }
         <div class="daily-strip" id="bp-daily"></div>
       </div>
       <div class="loc-card build">
-        <div class="loc-name">Construction / Build Area <span class="ts-badge ts-approximate" title="Recording start time not embedded in data files &mdash; time-of-day alignment is estimated">Approximate Timestamps</span></div>
+        <div class="loc-name">Construction / Build Area <span class="ts-badge ts-approximate" data-tip="Recording start time not embedded in data files — time-of-day alignment is estimated. Aggregate metrics (TWA, dose, Leq) remain valid." tabindex="0">Approximate Timestamps</span></div>
         <div class="loc-desc">Active construction zone &mdash; direct exposure for build crew</div>
         <div class="metrics-row">
           <div class="metric"><div class="value" id="ba-twa">--</div><div class="label">Avg TWA <span class="unit">dBA</span></div></div>
@@ -846,8 +1004,8 @@ svg text { font-family: 'Roboto', sans-serif; }
       <div class="chart-desc">Toggle location to view each microphone independently or overlaid. Toggle dates to compare day-over-day patterns.</div>
       <div class="date-toggle" id="loc-toggle" style="margin-bottom:8px;">
         <button class="date-btn active" data-val="both" onclick="toggleLoc(this)">Both Locations</button>
-        <button class="date-btn" data-val="bullpen" onclick="toggleLoc(this)">Bullpen Only <span class="ts-badge ts-verified" style="font-size:9px;padding:0 5px;margin-left:4px;">Verified</span></button>
-        <button class="date-btn" data-val="build" onclick="toggleLoc(this)">Build Area Only <span class="ts-badge ts-approximate" style="font-size:9px;padding:0 5px;margin-left:4px;">Approx.</span></button>
+        <button class="date-btn" data-val="bullpen" onclick="toggleLoc(this)">Bullpen Only <span class="ts-badge ts-verified" style="font-size:9px;padding:0 5px;margin-left:4px;" data-tip="Hardware-verified timestamps">Verified</span></button>
+        <button class="date-btn" data-val="build" onclick="toggleLoc(this)">Build Area Only <span class="ts-badge ts-approximate" style="font-size:9px;padding:0 5px;margin-left:4px;" data-tip="Start time inferred — aggregate metrics valid">Approx.</span></button>
       </div>
       <div id="overlay-legend" class="custom-legend">
         <div class="legend-item"><div class="legend-dot" style="background:var(--bullpen)"></div>Bullpen (Office)</div>
@@ -1392,6 +1550,125 @@ svg text { font-family: 'Roboto', sans-serif; }
           <div class="faq-a">Jensen's inequality is a theorem from convex analysis: for a convex function <em>f</em>, <em>f</em>(E[X]) &le; E[<em>f</em>(X)]. The function 10<sup>x/10</sup> is convex (its second derivative is positive). L<sub>eq</sub> is defined as 10&middot;log<sub>10</sub>(mean(10<sup>L<sub>i</sub>/10</sup>)), which equals 10&middot;log<sub>10</sub>(E[<em>f</em>(L<sub>i</sub>)]). The arithmetic mean is E[L<sub>i</sub>] = E[X]. Jensen's inequality guarantees that E[<em>f</em>(X)] &ge; <em>f</em>(E[X]), so L<sub>eq</sub> &ge; arithmetic mean of dBA values. This is a mathematical invariant, not an empirical approximation &mdash; if L<sub>eq</sub> < arithmetic mean, the energy-average computation contains a definite error. All three files passed this check.</div>
         </div>
       </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ TAB 4: NON-TECHNICAL GUIDE ═══ -->
+  <div id="tab-guide" class="tab-content" role="tabpanel" aria-labelledby="tab-guide-btn">
+
+    <div class="guide-hero">
+      <h3>Office Noise Levels Were Within Safe Ranges</h3>
+      <p>Over three days of continuous monitoring in February 2026, the noise levels measured in the Bullpen / office area were <strong>consistently well below</strong> every federal threshold for hearing protection. Here is what that means for you.</p>
+    </div>
+
+    <div class="exp-section">
+      <div class="exp-section-header">
+        <span class="num">01</span>
+        <h2>The Bottom Line</h2>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-safe">&#10003;</span> Your hearing is not at risk from normal office noise at this site</h4>
+        <p>We placed a professional-grade microphone in the Bullpen area and recorded continuously for three full work days (February 11&ndash;13, 2026). The microphone captured nearly one million individual sound level readings at a rate of 10 per second.</p>
+        <p>The recorded levels were evaluated against two regulatory standards: the <strong>OSHA Permissible Exposure Limit (PEL)</strong> of 90 dBA and the more protective <strong>NIOSH Recommended Exposure Limit (REL)</strong> of 85 dBA. On every day measured, the office area was below both of these limits by a wide margin.</p>
+      </div>
+
+      <div class="guide-comparison">
+        <div class="guide-level">
+          <div class="guide-level-label">Highest Daily Average Recorded</div>
+          <div class="guide-level-value" style="color:var(--safe)">71.8 dBA</div>
+          <div class="guide-level-context">February 12 &mdash; the loudest of the three days measured</div>
+        </div>
+        <div class="guide-level">
+          <div class="guide-level-label">OSHA Action Level</div>
+          <div class="guide-level-value" style="color:var(--text-muted)">85 dBA</div>
+          <div class="guide-level-context">The threshold where employers must begin a Hearing Conservation Program</div>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-info">&#8505;</span> What do those numbers actually mean?</h4>
+        <p><strong>71.8 dBA</strong> is comparable to the background noise level in a busy restaurant or a car traveling at highway speed with the windows up. It is noticeably louder than a quiet office (around 50&ndash;55 dBA) because the Bullpen sits adjacent to an active construction area, but it is far below levels that pose any risk to hearing.</p>
+        <p>The <strong>85 dBA action level</strong> is roughly the volume of a food blender or a busy city street. At that level, OSHA requires employers to offer hearing protection and annual hearing tests. The office area did not come close to that threshold on any day measured.</p>
+        <p>The <strong>90 dBA permissible exposure limit</strong> is about as loud as a lawn mower at operating distance. Sustained exposure at or above that level over an 8-hour shift requires hearing protection. The office area was nearly 20 dBA below this &mdash; and because the decibel scale is logarithmic, that represents roughly a 100-fold difference in sound energy.</p>
+      </div>
+    </div>
+
+    <div class="exp-section">
+      <div class="exp-section-header">
+        <span class="num">02</span>
+        <h2>How the Monitoring Worked</h2>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-info">&#9881;</span> Professional microphone, continuous recording</h4>
+        <p>A PCB Piezotronics precision microphone was positioned in the Bullpen area and connected to a Dewesoft data acquisition system. The equipment recorded the A-weighted sound pressure level 10 times per second, every second, for the full duration of each work shift. Over three days, the Bullpen microphone alone captured <strong>910,393 individual readings</strong>.</p>
+        <p>This is the same class of equipment and methodology used by professional industrial hygienists and acoustic consultants. The difference is that this was an <strong>area monitoring</strong> assessment &mdash; the microphone was placed at a fixed location in the workspace, not worn by an individual employee.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-info">&#128200;</span> Three days of data, independently verified</h4>
+        <p>Every metric in this dashboard &mdash; the daily averages, the dose percentages, the peak levels &mdash; was computed from the raw data using a transparent Python script that runs 7 independent mathematical cross-checks per day of data. All 21 checks passed. The verification process is documented in the Methodology &amp; Verification tab of this dashboard for anyone who wants to review it.</p>
+      </div>
+    </div>
+
+    <div class="exp-section">
+      <div class="exp-section-header">
+        <span class="num">03</span>
+        <h2>Common Concerns</h2>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-safe">&#10003;</span> &ldquo;I can hear the construction &mdash; is that harmful?&rdquo;</h4>
+        <p>Hearing construction activity does not mean the noise is at a harmful level. The human ear can perceive a wide range of sound levels. Conversations happen at around 60&ndash;65 dBA; the Bullpen averaged about 70 dBA (the equivalent of a television at moderate volume). You can hear the construction, but the sound energy reaching the office area is significantly attenuated by distance and building materials.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-safe">&#10003;</span> &ldquo;Some moments seem really loud &mdash; what about the peaks?&rdquo;</h4>
+        <p>The loudest single reading in the Bullpen over three days was <strong>106.9 dBA</strong> (a brief impulse on February 13). Occasional short peaks are normal &mdash; a door slamming nearby can register over 100 dBA for a fraction of a second. Hearing risk is determined by <strong>sustained average exposure over the full work shift</strong>, not by individual spikes. The daily averages (TWA) account for both loud and quiet periods, and those averages were well within safe ranges every day.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-safe">&#10003;</span> &ldquo;What about long-term exposure &mdash; is this three-day sample enough?&rdquo;</h4>
+        <p>Three days of continuous monitoring provides a meaningful initial snapshot of workplace noise conditions. Construction activity varies by project phase, crew size, equipment in use, and other factors, so noise levels on other days could be different. If you have concerns about a specific period or activity that seemed louder than usual, please bring that to the EHS team &mdash; additional monitoring can be arranged.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-info">&#8505;</span> &ldquo;What about the Build Area &mdash; the construction zone?&rdquo;</h4>
+        <p>A second microphone was placed in the active construction zone. Those levels were higher (daily averages around 77&ndash;80 dBA), which is expected in a construction environment. While still below the OSHA PEL, the Build Area levels are closer to regulatory thresholds and are tracked separately on this dashboard. Personnel working directly in the construction zone should follow any site-specific hearing protection requirements.</p>
+      </div>
+    </div>
+
+    <div class="exp-section">
+      <div class="exp-section-header">
+        <span class="num">04</span>
+        <h2>What Happens Next</h2>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-note">&#9888;</span> This is an area assessment, not a personal exposure determination</h4>
+        <p>The microphone measured noise at a fixed point in the workspace. Individual exposure can vary depending on where you work, how long you spend in different areas, and what tasks are being performed nearby. This assessment indicates that the general noise environment in the Bullpen area is well within safe ranges, but it does not measure what any specific person experienced over their individual shift.</p>
+        <p>A <strong>personal dosimetry study</strong> &mdash; where small noise monitors are worn by individual workers throughout the day &mdash; is the recognized method for determining individual exposure. That type of assessment may be conducted as a follow-up to confirm these area monitoring observations with person-specific data.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-info">&#128172;</span> Questions or concerns?</h4>
+        <p>If you experience ringing in your ears (tinnitus), difficulty hearing conversations, or feel that noise in your work area has increased significantly, please reach out to the EHS team. These observations are valuable even when instrument readings indicate safe levels &mdash; your subjective experience matters and can help us identify areas for follow-up monitoring.</p>
+      </div>
+    </div>
+
+    <div class="guide-scope">
+      <h4>Scope of This Assessment</h4>
+      <ul>
+        <li><strong>Type:</strong> Area noise monitoring (fixed microphone placement) &mdash; not personal dosimetry</li>
+        <li><strong>Location measured:</strong> Bullpen / office staging area adjacent to active construction</li>
+        <li><strong>Duration:</strong> Three consecutive work days (February 11&ndash;13, 2026), full shift each day</li>
+        <li><strong>Data collected:</strong> 910,393 sound level readings at 0.1-second intervals</li>
+        <li><strong>Standard applied:</strong> OSHA 29 CFR 1910.95 (PEL 90 dBA, Action Level 85 dBA) and NIOSH REL (85 dBA)</li>
+        <li><strong>Outcome:</strong> All daily time-weighted averages were below the OSHA Action Level &mdash; a Hearing Conservation Program is not triggered by these measurements</li>
+        <li><strong>Limitation:</strong> Area monitoring observations are not a substitute for personal exposure assessment and do not constitute a formal compliance determination</li>
+      </ul>
     </div>
 
   </div>
