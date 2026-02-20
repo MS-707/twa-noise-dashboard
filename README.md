@@ -8,7 +8,7 @@ A single-page interactive dashboard for occupational noise exposure analysis bui
 
 ## What This Project Demonstrates
 
-This dashboard was built entirely through a collaboration between an EHS professional and **Claude Opus 4.6** (Anthropic's CLI agent). It represents a shift in what's possible for in-house environmental health and safety work — not as a replacement for third-party assessment, but as a demonstration of how AI-assisted tooling can raise the floor of what a single practitioner can accomplish.
+This dashboard was built entirely through a collaboration between a EHS professional (Mark Starr, CSP) and **Claude Opus 4.6** (Anthropic's CLI agent). It represents a shift in what's possible for in-house environmental health and safety work — not as a replacement for third-party assessment, but as a demonstration of how AI-assisted tooling can raise the floor of what a single practitioner can accomplish.
 
 ### The Traditional EHS/IH Workflow
 
@@ -26,7 +26,7 @@ None of this is wrong — third-party assessment by qualified professionals rema
 
 What it *does* change is the **accessibility of the intermediate work** — the data processing, statistical analysis, visualization, and documentation that sits between raw field data and actionable insight.
 
-With Claude as a working partner, a single EHS professional was able to:
+With Claude as a working partner, a single CSP was able to:
 
 | Capability | Traditional Approach | With Claude Opus 4.6 |
 |---|---|---|
@@ -54,7 +54,7 @@ With Claude as a working partner, a single EHS professional was able to:
 To be explicit:
 
 - **This is not a substitute for personal dosimetry** per 29 CFR 1910.95(d)(1). These are area measurements from fixed microphones, not personal exposure assessments.
-- **This is not a formal compliance determination.** A qualified industrial hygienist (CIH) or safety professional should interpret results in context.
+- **This is not a formal compliance determination.** A qualified industrial hygienist (CIH) or Certified Safety Professional (CSP) should interpret results in context.
 - **The 3-day measurement window may not be representative** of long-term exposure patterns across different project phases, seasons, or crew configurations.
 - **Microphone calibration and DAQ accuracy are assumed** per manufacturer specifications — no independent calibration verification was performed.
 - **This tool assists EHS practitioners — it does not replace professional judgment.** The AI helps with computation, visualization, and documentation; the human provides context, field knowledge, and regulatory interpretation.
@@ -88,7 +88,7 @@ To be explicit:
 
 The EHS profession has a tooling gap. Industrial hygiene calculations are well-defined (the math hasn't changed since the 1970s) but the tools to perform, verify, and present that math remain locked behind expensive licenses or consultant relationships. Most in-house EHS teams operate with Excel spreadsheets and institutional knowledge.
 
-AI agents like Claude Opus 4.6 don't replace the expertise — they remove the *implementation barrier*. An EHS professional who understands what a TWA means and why it matters can now produce a verified, transparent, interactive analysis from raw field data in an afternoon instead of waiting weeks for a consultant report.
+AI agents like Claude Opus 4.6 don't replace the expertise — they remove the *implementation barrier*. An EHS professional who understands regulatory requirements, what a TWA means and why it matters can now produce a verified, transparent, interactive analysis from raw field data in an afternoon instead of waiting weeks for a consultant report.
 
 The goal isn't to cut corners. It's to raise the standard of what "good enough for internal use" looks like — from a static spreadsheet with no verification to a peer-reviewable, version-controlled, publicly deployable analysis with full methodological documentation.
 
@@ -103,3 +103,4 @@ Internal use. Assessment data is from an actual workplace noise study (February 
 ---
 
 *Built with [Claude Code](https://claude.ai/claude-code) (Claude Opus 4.6) as an EHS/AI collaboration experiment.*
+
