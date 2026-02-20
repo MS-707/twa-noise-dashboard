@@ -842,34 +842,24 @@ svg text { font-family: 'Roboto', sans-serif; }
     </div>
 
     <div class="chart-section">
-      <div class="chart-title">Hourly Noise Levels &mdash; Location Comparison by Date</div>
-      <div class="chart-desc">Leq by hour of day, showing both locations overlaid. Toggle dates to compare day-over-day patterns.</div>
-      <div class="custom-legend">
+      <div class="chart-title">Hourly Noise Levels &mdash; L<sub>eq</sub> by Hour of Day</div>
+      <div class="chart-desc">Toggle location to view each microphone independently or overlaid. Toggle dates to compare day-over-day patterns.</div>
+      <div class="date-toggle" id="loc-toggle" style="margin-bottom:8px;">
+        <button class="date-btn active" data-val="both" onclick="toggleLoc(this)">Both Locations</button>
+        <button class="date-btn" data-val="bullpen" onclick="toggleLoc(this)">Bullpen Only <span class="ts-badge ts-verified" style="font-size:9px;padding:0 5px;margin-left:4px;">Verified</span></button>
+        <button class="date-btn" data-val="build" onclick="toggleLoc(this)">Build Area Only <span class="ts-badge ts-approximate" style="font-size:9px;padding:0 5px;margin-left:4px;">Approx.</span></button>
+      </div>
+      <div id="overlay-legend" class="custom-legend">
         <div class="legend-item"><div class="legend-dot" style="background:var(--bullpen)"></div>Bullpen (Office)</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--build)"></div>Build Area (Construction)</div>
       </div>
       <div class="date-toggle" id="overlay-toggle"></div>
       <div class="chart-wrap tall"><canvas id="chart-overlay"></canvas></div>
-      <div style="font-size:12px;color:var(--caution);font-style:italic;margin-top:6px;line-height:1.4;">Note: Build Area time axis is approximate &mdash; recording start time was not embedded in the data files. Bullpen timestamps are hardware-verified.</div>
+      <div id="overlay-disclaimer" style="font-size:12px;color:var(--caution);font-style:italic;margin-top:6px;line-height:1.4;">Note: Build Area time axis is approximate &mdash; recording start time was not embedded in the data files. Bullpen timestamps are hardware-verified.</div>
       <div class="threshold-legend">
         <div class="threshold-item"><div class="tline" style="border-color:var(--danger)"></div>90 dBA PEL</div>
         <div class="threshold-item"><div class="tline" style="border-color:var(--caution)"></div>85 dBA Action Level</div>
         <div class="threshold-item"><div class="tline" style="border-color:var(--text-muted)"></div>80 dBA Threshold</div>
-      </div>
-    </div>
-
-    <div class="chart-row">
-      <div class="chart-section">
-        <div class="chart-title">Bullpen &mdash; Standalone Hourly L<sub>eq</sub> <span class="ts-badge ts-verified" style="font-size:10px;padding:1px 6px;vertical-align:middle;">Verified Timestamps</span></div>
-        <div class="chart-desc">Bullpen hourly noise levels with hardware-verified time axis. Independent of Build Area data.</div>
-        <div class="date-toggle" id="bp-solo-toggle"></div>
-        <div class="chart-wrap"><canvas id="chart-bp-solo"></canvas></div>
-      </div>
-      <div class="chart-section">
-        <div class="chart-title">Build Area &mdash; Standalone Hourly L<sub>eq</sub> <span class="ts-badge ts-approximate" style="font-size:10px;padding:1px 6px;vertical-align:middle;">Approx. Timestamps</span></div>
-        <div class="chart-desc">Build Area hourly noise levels. Time-of-day alignment is estimated &mdash; start time not recorded by equipment.</div>
-        <div class="date-toggle" id="ba-solo-toggle"></div>
-        <div class="chart-wrap"><canvas id="chart-ba-solo"></canvas></div>
       </div>
     </div>
 
@@ -1619,39 +1609,71 @@ function populateKPIs() {
 // ASSESSMENT TAB: CHARTS
 // ═══════════════════════════════════════════════════════════════
 let overlayChart;
+let overlayLocFilter = 'both';
+
+function toggleLoc(btn) {
+  document.getElementById('loc-toggle').querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  overlayLocFilter = btn.dataset.val;
+  // Update legend visibility
+  const legend = document.getElementById('overlay-legend');
+  legend.style.display = overlayLocFilter === 'both' ? '' : 'none';
+  // Update disclaimer visibility
+  const disclaimer = document.getElementById('overlay-disclaimer');
+  disclaimer.style.display = overlayLocFilter === 'bullpen' ? 'none' : '';
+  // Rebuild with current date selection
+  const activeDateBtn = document.getElementById('overlay-toggle').querySelector('.date-btn.active');
+  const selectedDate = activeDateBtn ? activeDateBtn.dataset.val : 'all';
+  buildOverlayChart(selectedDate);
+}
+
 function buildOverlayChart(selectedDate) {
   const ctx = document.getElementById('chart-overlay').getContext('2d');
   const datesToShow = selectedDate === 'all' ? Object.keys(DATA.overlay) : [selectedDate];
+  const loc = overlayLocFilter;
+  const showBp = loc === 'both' || loc === 'bullpen';
+  const showBa = loc === 'both' || loc === 'build';
+  const isSolo = loc !== 'both';
   const datasets = [];
   datesToShow.forEach((d, di) => {
     const pts = DATA.overlay[d];
     const opacity = selectedDate === 'all' ? [1, 0.5, 0.25][di] : 1;
     const dash = selectedDate === 'all' ? [[], [8,4], [4,4]][di] : [];
-    datasets.push({
-      label: 'Bullpen ' + DATE_LABELS[d],
-      data: pts.filter(p => p.bullpen !== null).map(p => ({ x: p.hour, y: p.bullpen })),
-      borderColor: `rgba(${C.bullpenRgba},${opacity})`,
-      backgroundColor: 'transparent',
-      borderWidth: selectedDate === 'all' ? 2 : 2.5,
-      borderDash: dash,
-      pointRadius: selectedDate === 'all' ? 0 : 4,
-      pointBackgroundColor: C.bullpen,
-      tension: 0,
-      order: 2,
-    });
-    datasets.push({
-      label: 'Build Area ' + DATE_LABELS[d],
-      data: pts.filter(p => p.build !== null).map(p => ({ x: p.hour, y: p.build })),
-      borderColor: `rgba(${C.buildRgba},${opacity})`,
-      backgroundColor: 'transparent',
-      borderWidth: selectedDate === 'all' ? 2 : 2.5,
-      borderDash: dash,
-      pointRadius: selectedDate === 'all' ? 0 : 4,
-      pointBackgroundColor: C.build,
-      tension: 0,
-      order: 1,
-    });
+    if (showBp) {
+      datasets.push({
+        label: (isSolo ? '' : 'Bullpen ') + DATE_LABELS[d],
+        data: pts.filter(p => p.bullpen !== null).map(p => ({ x: p.hour, y: p.bullpen })),
+        borderColor: `rgba(${C.bullpenRgba},${opacity})`,
+        backgroundColor: (isSolo && selectedDate !== 'all') ? `rgba(${C.bullpenRgba},0.08)` : 'transparent',
+        fill: isSolo && selectedDate !== 'all',
+        borderWidth: selectedDate === 'all' ? 2 : 2.5,
+        borderDash: dash,
+        pointRadius: selectedDate === 'all' ? 0 : 4,
+        pointBackgroundColor: C.bullpen,
+        tension: isSolo ? 0.2 : 0,
+        order: 2,
+      });
+    }
+    if (showBa) {
+      datasets.push({
+        label: (isSolo ? '' : 'Build Area ') + DATE_LABELS[d],
+        data: pts.filter(p => p.build !== null).map(p => ({ x: p.hour, y: p.build })),
+        borderColor: `rgba(${C.buildRgba},${opacity})`,
+        backgroundColor: (isSolo && selectedDate !== 'all') ? `rgba(${C.buildRgba},0.06)` : 'transparent',
+        fill: isSolo && selectedDate !== 'all',
+        borderWidth: selectedDate === 'all' ? 2 : 2.5,
+        borderDash: dash,
+        pointRadius: selectedDate === 'all' ? 0 : 4,
+        pointBackgroundColor: C.build,
+        tension: isSolo ? 0.2 : 0,
+        order: 1,
+      });
+    }
   });
+  // Adjust y-axis range based on location
+  const yMin = loc === 'build' ? 65 : 55;
+  const yMax = loc === 'bullpen' ? 95 : 100;
+  const xLabel = loc === 'bullpen' ? 'Hour of Day (Verified)' : loc === 'build' ? 'Hour of Day (Approximate)' : 'Hour of Day';
   if (overlayChart) overlayChart.destroy();
   overlayChart = new Chart(ctx, {
     type: 'line',
@@ -1661,13 +1683,13 @@ function buildOverlayChart(selectedDate) {
       interaction: { mode: 'nearest', intersect: false },
       scales: {
         x: {
-          type: 'linear', min: 8, max: 16,
+          type: 'linear', min: 8, max: 17,
           grid: { display: false },
           ticks: { stepSize: 1, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ':00' },
-          title: { display: true, text: 'Hour of Day', font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel },
+          title: { display: true, text: xLabel, font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel },
         },
         y: {
-          min: 55, max: 100,
+          min: yMin, max: yMax,
           grid: { color: C.grid },
           ticks: { stepSize: 5, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ' dBA' },
           border: { display: false },
@@ -1682,122 +1704,6 @@ function buildOverlayChart(selectedDate) {
             label: item => item.dataset.label + ': ' + item.raw.y.toFixed(1) + ' dBA',
           },
         },
-      },
-    },
-  });
-}
-
-let bpSoloChart;
-function buildBpSoloChart(selectedDate) {
-  const ctx = document.getElementById('chart-bp-solo').getContext('2d');
-  const datesToShow = selectedDate === 'all' ? Object.keys(DATA.overlay) : [selectedDate];
-  const datasets = [];
-  datesToShow.forEach((d, di) => {
-    const pts = DATA.overlay[d];
-    const opacity = selectedDate === 'all' ? [1, 0.5, 0.25][di] : 1;
-    const dash = selectedDate === 'all' ? [[], [8,4], [4,4]][di] : [];
-    datasets.push({
-      label: DATE_LABELS[d],
-      data: pts.filter(p => p.bullpen !== null).map(p => ({ x: p.hour, y: p.bullpen })),
-      borderColor: `rgba(${C.bullpenRgba},${opacity})`,
-      backgroundColor: selectedDate !== 'all' ? `rgba(${C.bullpenRgba},0.08)` : 'transparent',
-      fill: selectedDate !== 'all',
-      borderWidth: selectedDate === 'all' ? 2 : 2.5,
-      borderDash: dash,
-      pointRadius: selectedDate === 'all' ? 0 : 4,
-      pointBackgroundColor: C.bullpen,
-      tension: 0.2,
-    });
-  });
-  if (bpSoloChart) bpSoloChart.destroy();
-  bpSoloChart = new Chart(ctx, {
-    type: 'line',
-    data: { datasets },
-    options: {
-      ...baseOptions,
-      interaction: { mode: 'nearest', intersect: false },
-      scales: {
-        x: {
-          type: 'linear', min: 8, max: 17,
-          grid: { display: false },
-          ticks: { stepSize: 1, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ':00' },
-          title: { display: true, text: 'Hour of Day (Verified)', font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel },
-        },
-        y: {
-          min: 55, max: 95,
-          grid: { color: C.grid },
-          ticks: { stepSize: 5, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ' dBA' },
-          border: { display: false },
-        },
-      },
-      plugins: {
-        ...baseOptions.plugins,
-        annotation: { annotations: {
-          al: { type: 'line', yMin: 85, yMax: 85, borderColor: C.caution, borderWidth: 1, borderDash: [6,4] },
-          pel: { type: 'line', yMin: 90, yMax: 90, borderColor: C.danger, borderWidth: 1, borderDash: [6,4] },
-        }},
-        tooltip: { ...baseOptions.plugins.tooltip, callbacks: {
-          title: items => items[0] ? items[0].raw.x + ':00' : '',
-          label: item => item.dataset.label + ': ' + item.raw.y.toFixed(1) + ' dBA',
-        }},
-      },
-    },
-  });
-}
-
-let baSoloChart;
-function buildBaSoloChart(selectedDate) {
-  const ctx = document.getElementById('chart-ba-solo').getContext('2d');
-  const datesToShow = selectedDate === 'all' ? Object.keys(DATA.overlay) : [selectedDate];
-  const datasets = [];
-  datesToShow.forEach((d, di) => {
-    const pts = DATA.overlay[d];
-    const opacity = selectedDate === 'all' ? [1, 0.5, 0.25][di] : 1;
-    const dash = selectedDate === 'all' ? [[], [8,4], [4,4]][di] : [];
-    datasets.push({
-      label: DATE_LABELS[d],
-      data: pts.filter(p => p.build !== null).map(p => ({ x: p.hour, y: p.build })),
-      borderColor: `rgba(${C.buildRgba},${opacity})`,
-      backgroundColor: selectedDate !== 'all' ? `rgba(${C.buildRgba},0.06)` : 'transparent',
-      fill: selectedDate !== 'all',
-      borderWidth: selectedDate === 'all' ? 2 : 2.5,
-      borderDash: dash,
-      pointRadius: selectedDate === 'all' ? 0 : 4,
-      pointBackgroundColor: C.build,
-      tension: 0.2,
-    });
-  });
-  if (baSoloChart) baSoloChart.destroy();
-  baSoloChart = new Chart(ctx, {
-    type: 'line',
-    data: { datasets },
-    options: {
-      ...baseOptions,
-      interaction: { mode: 'nearest', intersect: false },
-      scales: {
-        x: {
-          type: 'linear', min: 8, max: 16,
-          grid: { display: false },
-          ticks: { stepSize: 1, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ':00' },
-          title: { display: true, text: 'Hour of Day (Approximate)', font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel },
-        },
-        y: {
-          min: 65, max: 100,
-          grid: { color: C.grid },
-          ticks: { stepSize: 5, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ' dBA' },
-          border: { display: false },
-        },
-      },
-      plugins: {
-        ...baseOptions.plugins,
-        annotation: { annotations: {
-          al: { type: 'line', yMin: 85, yMax: 85, borderColor: C.caution, borderWidth: 1, borderDash: [6,4] },
-          pel: { type: 'line', yMin: 90, yMax: 90, borderColor: C.danger, borderWidth: 1, borderDash: [6,4] },
-        }},
-        tooltip: { ...baseOptions.plugins.tooltip, callbacks: {
-          title: items => items[0] ? items[0].raw.x + ':00' : '',
-          label: item => item.dataset.label + ': ' + item.raw.y.toFixed(1) + ' dBA',
-        }},
       },
     },
   });
@@ -2106,13 +2012,9 @@ function initExperimental() {
 // ═══════════════════════════════════════════════════════════════
 populateKPIs();
 createToggles('overlay-toggle', buildOverlayChart);
-createToggles('bp-solo-toggle', buildBpSoloChart);
-createToggles('ba-solo-toggle', buildBaSoloChart);
 createToggles('dist-toggle', buildDistChart);
 createToggles('dose-toggle', buildDoseChart);
 buildOverlayChart('all');
-buildBpSoloChart('all');
-buildBaSoloChart('all');
 buildDistChart('all');
 buildDoseChart('all');
 buildTWABars();
