@@ -1670,9 +1670,16 @@ function buildOverlayChart(selectedDate) {
       });
     }
   });
-  // Adjust y-axis range based on location
-  const yMin = loc === 'build' ? 65 : 55;
-  const yMax = loc === 'bullpen' ? 95 : 100;
+  // Derive axis bounds from actual data — no hardcoded values
+  const allX = datasets.flatMap(ds => ds.data.map(p => p.x));
+  const allY = datasets.flatMap(ds => ds.data.map(p => p.y));
+  const xMin = Math.min(...allX);
+  const xMax = Math.max(...allX);
+  const dataYMin = Math.min(...allY);
+  const dataYMax = Math.max(...allY);
+  // Y-axis: round down/up to nearest 5 dBA with padding
+  const yMin = Math.floor((dataYMin - 3) / 5) * 5;
+  const yMax = Math.ceil((dataYMax + 3) / 5) * 5;
   const xLabel = loc === 'bullpen' ? 'Hour of Day (Verified)' : loc === 'build' ? 'Hour of Day (Approximate)' : 'Hour of Day';
   if (overlayChart) overlayChart.destroy();
   overlayChart = new Chart(ctx, {
@@ -1683,13 +1690,13 @@ function buildOverlayChart(selectedDate) {
       interaction: { mode: 'nearest', intersect: false },
       scales: {
         x: {
-          type: 'linear', min: 8, max: 17,
+          type: 'linear', min: xMin, max: xMax,
           grid: { display: false },
           ticks: { stepSize: 1, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ':00' },
           title: { display: true, text: xLabel, font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel },
         },
         y: {
-          min: yMin, max: yMax,
+          min: yMin, max: Math.max(yMax, 90),
           grid: { color: C.grid },
           ticks: { stepSize: 5, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ' dBA' },
           border: { display: false },
