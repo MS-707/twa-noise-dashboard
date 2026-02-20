@@ -860,6 +860,21 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="chart-row">
       <div class="chart-section">
+        <div class="chart-title">Bullpen &mdash; Standalone Hourly L<sub>eq</sub> <span class="ts-badge ts-verified" style="font-size:10px;padding:1px 6px;vertical-align:middle;">Verified Timestamps</span></div>
+        <div class="chart-desc">Bullpen hourly noise levels with hardware-verified time axis. Independent of Build Area data.</div>
+        <div class="date-toggle" id="bp-solo-toggle"></div>
+        <div class="chart-wrap"><canvas id="chart-bp-solo"></canvas></div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-title">Build Area &mdash; Standalone Hourly L<sub>eq</sub> <span class="ts-badge ts-approximate" style="font-size:10px;padding:1px 6px;vertical-align:middle;">Approx. Timestamps</span></div>
+        <div class="chart-desc">Build Area hourly noise levels. Time-of-day alignment is estimated &mdash; start time not recorded by equipment.</div>
+        <div class="date-toggle" id="ba-solo-toggle"></div>
+        <div class="chart-wrap"><canvas id="chart-ba-solo"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-section">
         <div class="chart-title">Noise Level Distribution</div>
         <div class="chart-desc">Frequency of readings at each dBA level across the 3-day period</div>
         <div class="date-toggle" id="dist-toggle"></div>
@@ -1353,7 +1368,7 @@ svg text { font-family: 'Roboto', sans-serif; }
         </div>
 
         <div class="faq-item">
-          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Why is the OSHA TWA so much lower than the L<sub>eq</sub>?</div>
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false"><span>Why is the OSHA TWA so much lower than the L<sub>eq</sub>?</span></div>
           <div class="faq-a">Because OSHA applies an 80 dBA threshold. Any sample below 80 dBA contributes zero dose. In this dataset, the vast majority of samples are below 80 dBA (median L<sub>50</sub> values range from 64.9 to 68.9 dBA across the three days). This means large portions of the recording &mdash; often 88&ndash;96% of samples &mdash; contribute nothing to the OSHA dose, pulling the TWA well below the energy-average L<sub>eq</sub>. L<sub>eq</sub> includes the energy contribution of every sample regardless of level, which is why it is always higher. NIOSH TWA falls between the two because it uses a 3 dB exchange rate (more aggressive energy weighting) but still applies an 80 dBA threshold.</div>
         </div>
 
@@ -1672,6 +1687,122 @@ function buildOverlayChart(selectedDate) {
   });
 }
 
+let bpSoloChart;
+function buildBpSoloChart(selectedDate) {
+  const ctx = document.getElementById('chart-bp-solo').getContext('2d');
+  const datesToShow = selectedDate === 'all' ? Object.keys(DATA.overlay) : [selectedDate];
+  const datasets = [];
+  datesToShow.forEach((d, di) => {
+    const pts = DATA.overlay[d];
+    const opacity = selectedDate === 'all' ? [1, 0.5, 0.25][di] : 1;
+    const dash = selectedDate === 'all' ? [[], [8,4], [4,4]][di] : [];
+    datasets.push({
+      label: DATE_LABELS[d],
+      data: pts.filter(p => p.bullpen !== null).map(p => ({ x: p.hour, y: p.bullpen })),
+      borderColor: `rgba(${C.bullpenRgba},${opacity})`,
+      backgroundColor: selectedDate !== 'all' ? `rgba(${C.bullpenRgba},0.08)` : 'transparent',
+      fill: selectedDate !== 'all',
+      borderWidth: selectedDate === 'all' ? 2 : 2.5,
+      borderDash: dash,
+      pointRadius: selectedDate === 'all' ? 0 : 4,
+      pointBackgroundColor: C.bullpen,
+      tension: 0.2,
+    });
+  });
+  if (bpSoloChart) bpSoloChart.destroy();
+  bpSoloChart = new Chart(ctx, {
+    type: 'line',
+    data: { datasets },
+    options: {
+      ...baseOptions,
+      interaction: { mode: 'nearest', intersect: false },
+      scales: {
+        x: {
+          type: 'linear', min: 8, max: 17,
+          grid: { display: false },
+          ticks: { stepSize: 1, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ':00' },
+          title: { display: true, text: 'Hour of Day (Verified)', font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel },
+        },
+        y: {
+          min: 55, max: 95,
+          grid: { color: C.grid },
+          ticks: { stepSize: 5, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ' dBA' },
+          border: { display: false },
+        },
+      },
+      plugins: {
+        ...baseOptions.plugins,
+        annotation: { annotations: {
+          al: { type: 'line', yMin: 85, yMax: 85, borderColor: C.caution, borderWidth: 1, borderDash: [6,4] },
+          pel: { type: 'line', yMin: 90, yMax: 90, borderColor: C.danger, borderWidth: 1, borderDash: [6,4] },
+        }},
+        tooltip: { ...baseOptions.plugins.tooltip, callbacks: {
+          title: items => items[0] ? items[0].raw.x + ':00' : '',
+          label: item => item.dataset.label + ': ' + item.raw.y.toFixed(1) + ' dBA',
+        }},
+      },
+    },
+  });
+}
+
+let baSoloChart;
+function buildBaSoloChart(selectedDate) {
+  const ctx = document.getElementById('chart-ba-solo').getContext('2d');
+  const datesToShow = selectedDate === 'all' ? Object.keys(DATA.overlay) : [selectedDate];
+  const datasets = [];
+  datesToShow.forEach((d, di) => {
+    const pts = DATA.overlay[d];
+    const opacity = selectedDate === 'all' ? [1, 0.5, 0.25][di] : 1;
+    const dash = selectedDate === 'all' ? [[], [8,4], [4,4]][di] : [];
+    datasets.push({
+      label: DATE_LABELS[d],
+      data: pts.filter(p => p.build !== null).map(p => ({ x: p.hour, y: p.build })),
+      borderColor: `rgba(${C.buildRgba},${opacity})`,
+      backgroundColor: selectedDate !== 'all' ? `rgba(${C.buildRgba},0.06)` : 'transparent',
+      fill: selectedDate !== 'all',
+      borderWidth: selectedDate === 'all' ? 2 : 2.5,
+      borderDash: dash,
+      pointRadius: selectedDate === 'all' ? 0 : 4,
+      pointBackgroundColor: C.build,
+      tension: 0.2,
+    });
+  });
+  if (baSoloChart) baSoloChart.destroy();
+  baSoloChart = new Chart(ctx, {
+    type: 'line',
+    data: { datasets },
+    options: {
+      ...baseOptions,
+      interaction: { mode: 'nearest', intersect: false },
+      scales: {
+        x: {
+          type: 'linear', min: 8, max: 16,
+          grid: { display: false },
+          ticks: { stepSize: 1, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ':00' },
+          title: { display: true, text: 'Hour of Day (Approximate)', font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel },
+        },
+        y: {
+          min: 65, max: 100,
+          grid: { color: C.grid },
+          ticks: { stepSize: 5, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ' dBA' },
+          border: { display: false },
+        },
+      },
+      plugins: {
+        ...baseOptions.plugins,
+        annotation: { annotations: {
+          al: { type: 'line', yMin: 85, yMax: 85, borderColor: C.caution, borderWidth: 1, borderDash: [6,4] },
+          pel: { type: 'line', yMin: 90, yMax: 90, borderColor: C.danger, borderWidth: 1, borderDash: [6,4] },
+        }},
+        tooltip: { ...baseOptions.plugins.tooltip, callbacks: {
+          title: items => items[0] ? items[0].raw.x + ':00' : '',
+          label: item => item.dataset.label + ': ' + item.raw.y.toFixed(1) + ' dBA',
+        }},
+      },
+    },
+  });
+}
+
 let distChart;
 function buildDistChart(selectedDate) {
   const ctx = document.getElementById('chart-dist').getContext('2d');
@@ -1975,9 +2106,13 @@ function initExperimental() {
 // ═══════════════════════════════════════════════════════════════
 populateKPIs();
 createToggles('overlay-toggle', buildOverlayChart);
+createToggles('bp-solo-toggle', buildBpSoloChart);
+createToggles('ba-solo-toggle', buildBaSoloChart);
 createToggles('dist-toggle', buildDistChart);
 createToggles('dose-toggle', buildDoseChart);
 buildOverlayChart('all');
+buildBpSoloChart('all');
+buildBaSoloChart('all');
 buildDistChart('all');
 buildDoseChart('all');
 buildTWABars();
