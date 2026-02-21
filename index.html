@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>TWA Noise Exposure Assessment</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%236C2BD9' stroke-width='2'/%3E%3Cpath d='M10 20 Q16 8 22 20' fill='none' stroke='%236C2BD9' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,6 +60,7 @@ body {
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   padding: 0 24px;
+  padding-top: env(safe-area-inset-top);
 }
 .site-header-inner {
   max-width: 1280px;
@@ -156,7 +160,7 @@ body {
 }
 
 /* ═══ MAIN CONTENT ═══ */
-.page { max-width: 1280px; margin: 0 auto; padding: 24px 24px 64px; }
+.page { max-width: 1280px; margin: 0 auto; padding: 24px 24px calc(64px + env(safe-area-inset-bottom)); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 
@@ -427,6 +431,7 @@ body {
 .status-safe { background: var(--safe-light); color: var(--safe); }
 .status-caution { background: var(--caution-light); color: var(--caution); }
 .status-danger { background: var(--danger-light); color: var(--danger); }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
 /* ═══ SPARKLINES ═══ */
 .sparkline-grid {
@@ -948,6 +953,43 @@ svg text { font-family: 'Roboto', sans-serif; }
   .formula-block { font-size: 13px; padding: 12px 14px; }
   .check-row { flex-direction: column; gap: 4px; }
 }
+
+/* ═══ RESPONSIVE — 640px (phones) ═══ */
+@media (max-width: 640px) {
+  .site-header { padding-left: 16px; padding-right: 16px; }
+  .hero { padding: 24px 16px 0; }
+  .hero h1 { font-size: 22px; }
+  .hero .subtitle { font-size: 13px; }
+  .page { padding: 16px 16px calc(48px + env(safe-area-inset-bottom)); }
+  .tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 10px 16px; font-size: 13px; white-space: nowrap; flex-shrink: 0; }
+  .loc-card { padding: 16px; }
+  .chart-section { padding: 16px; }
+  .chart-wrap { height: 260px; }
+  .chart-wrap.tall { height: 320px; }
+  .date-toggle { flex-wrap: wrap; }
+  .date-btn { padding: 8px 10px; font-size: 11px; }
+  .summary-table { font-size: 12px; }
+  .summary-table thead th { font-size: 9px; padding: 8px 8px; }
+  .summary-table tbody td { padding: 10px 8px; }
+  .faq-q { font-size: 13px; }
+  .exp-card { padding: 16px; }
+  .why-card { padding: 16px; }
+  .guide-card { padding: 16px; }
+  .guide-hero { padding: 24px 16px; }
+  .guide-scope { padding: 16px; }
+}
+
+/* ═══ RESPONSIVE — 480px (small phones) ═══ */
+@media (max-width: 480px) {
+  .sparkline-grid { grid-template-columns: 1fr; }
+  .chart-wrap { height: 220px; }
+  .chart-wrap.tall { height: 280px; }
+  .metric .value { font-size: 22px; }
+  .guide-level { padding: 12px; }
+  .guide-level .guide-level-value { font-size: 22px; }
+}
 </style>
 </head>
 <body>
@@ -1007,8 +1049,8 @@ svg text { font-family: 'Roboto', sans-serif; }
       <div class="chart-desc">Toggle location to view each microphone independently or overlaid. Toggle dates to compare day-over-day patterns.</div>
       <div class="date-toggle" id="loc-toggle" style="margin-bottom:8px;">
         <button class="date-btn active" data-val="both" onclick="toggleLoc(this)">Both Locations</button>
-        <button class="date-btn" data-val="bullpen" onclick="toggleLoc(this)">Bullpen Only <span class="ts-badge ts-verified" style="font-size:9px;padding:0 5px;margin-left:4px;" data-tip="Hardware-verified timestamps">Verified</span></button>
-        <button class="date-btn" data-val="build" onclick="toggleLoc(this)">Build Area Only <span class="ts-badge ts-approximate" style="font-size:9px;padding:0 5px;margin-left:4px;" data-tip="Start time inferred — aggregate metrics valid">Approx.</span></button>
+        <button class="date-btn" data-val="bullpen" onclick="toggleLoc(this)">Bullpen Only <span class="ts-badge ts-verified" style="font-size:10px;padding:0 5px;margin-left:4px;" data-tip="Hardware-verified timestamps">Verified</span></button>
+        <button class="date-btn" data-val="build" onclick="toggleLoc(this)">Build Area Only <span class="ts-badge ts-approximate" style="font-size:10px;padding:0 5px;margin-left:4px;" data-tip="Start time inferred — aggregate metrics valid">Approx.</span></button>
       </div>
       <div id="overlay-legend" class="custom-legend">
         <div class="legend-item"><div class="legend-dot" style="background:var(--bullpen)"></div>Bullpen (Office)</div>
@@ -1054,7 +1096,8 @@ svg text { font-family: 'Roboto', sans-serif; }
     <div class="chart-section">
       <div class="chart-title">Detailed Results Summary</div>
       <div class="chart-desc">Complete metrics for each location and monitoring date</div>
-      <table class="summary-table">
+      <div class="table-scroll">
+      <table class="summary-table" style="min-width:700px;">
         <thead>
           <tr>
             <th>Location</th><th>Date</th><th>OSHA TWA</th><th>Dose %</th>
@@ -1064,6 +1107,7 @@ svg text { font-family: 'Roboto', sans-serif; }
         </thead>
         <tbody id="summary-tbody"></tbody>
       </table>
+      </div>
     </div>
   </div>
 
@@ -2089,8 +2133,8 @@ function buildTable() {
     const statusText = r.osha_twa >= 90 ? 'Exceeds PEL' : r.osha_twa >= 85 ? 'Action Level' : 'Below AL';
     const locColor = r.location === 'Bullpen' ? C.bullpen : C.build;
     const tsBadge = r.timestamp_source === 'hardware'
-      ? '<span class="ts-badge ts-verified" style="margin-left:4px;font-size:9px;padding:1px 5px;">Verified</span>'
-      : '<span class="ts-badge ts-approximate" style="margin-left:4px;font-size:9px;padding:1px 5px;">Approx.</span>';
+      ? '<span class="ts-badge ts-verified" style="margin-left:4px;font-size:10px;padding:1px 5px;">Verified</span>'
+      : '<span class="ts-badge ts-approximate" style="margin-left:4px;font-size:10px;padding:1px 5px;">Approx.</span>';
     return `<tr><td><strong style="color:${locColor}">${r.location}</strong>${tsBadge}</td><td>${DATE_LABELS[r.date]}</td><td><strong>${r.osha_twa}</strong></td><td>${r.osha_dose_pct}%</td><td>${r.leq}</td><td>${r.L10}</td><td>${r.L50}</td><td>${r.L90}</td><td>${r.L_max}</td><td>${r.niosh_twa}</td><td><span class="status-badge status-${badge}">${statusText}</span></td></tr>`;
   }).join('');
 }
