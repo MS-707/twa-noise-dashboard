@@ -8,7 +8,7 @@ A single-page interactive dashboard for occupational noise exposure analysis bui
 
 ## What This Project Demonstrates
 
-This dashboard was built entirely through a collaboration between a EHS professional (Mark Starr, CSP) and **Claude Opus 4.6** (Anthropic's CLI agent). It represents a shift in what's possible for in-house environmental health and safety work — not as a replacement for third-party assessment, but as a demonstration of how AI-assisted tooling can raise the floor of what a single practitioner can accomplish.
+This dashboard was built entirely through a collaboration between an EHS professional (Mark Starr, CSP) and **Claude Opus 4.6** (Anthropic's CLI agent). It represents a shift in what's possible for in-house environmental health and safety work — not as a replacement for third-party assessment, but as a demonstration of how AI-assisted tooling can raise the floor of what a single practitioner can accomplish.
 
 ### The Traditional EHS/IH Workflow
 
