@@ -286,6 +286,16 @@ body {
   font-weight: 400;
   color: var(--text-secondary);
 }
+.daily-strip-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  margin-top: 16px;
+  margin-bottom: 6px;
+  padding-left: 2px;
+}
 .daily-strip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -309,6 +319,11 @@ body {
   font-weight: 700;
   margin-top: 2px;
   font-variant-numeric: tabular-nums;
+}
+.daily-chip .twa-unit {
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.7;
 }
 
 /* ═══ CHART SECTIONS ═══ */
@@ -1099,20 +1114,22 @@ svg text { font-family: 'Roboto', sans-serif; }
         <div class="loc-name">Office / Bullpen Area <span class="ts-badge ts-verified" data-tip="Recording timestamps embedded in data files by hardware — clock times are accurate" aria-label="Verified Timestamps: recording timestamps embedded in data files by hardware, clock times are accurate" tabindex="0">Verified Timestamps</span></div>
         <div class="loc-desc">Worker staging &amp; coordination &mdash; ambient exposure from nearby construction</div>
         <div class="metrics-row">
-          <div class="metric"><div class="value" id="bp-twa">--</div><div class="label">Avg TWA <span class="unit">dBA</span></div></div>
-          <div class="metric"><div class="value" id="bp-leq">--</div><div class="label">Avg Leq <span class="unit">dBA</span></div></div>
+          <div class="metric"><div class="value" id="bp-twa">--</div><div class="label">OSHA TWA <span class="unit">dBA</span></div></div>
+          <div class="metric"><div class="value" id="bp-leq">--</div><div class="label">Avg L<sub>eq</sub> <span class="unit">dBA</span></div></div>
           <div class="metric"><div class="value" id="bp-peak">--</div><div class="label">Max Peak <span class="unit">dBA</span></div></div>
         </div>
+        <div class="daily-strip-label">Daily OSHA TWA</div>
         <div class="daily-strip" id="bp-daily"></div>
       </div>
       <div class="loc-card build">
         <div class="loc-name">Construction / Build Area <span class="ts-badge ts-approximate" data-tip="Recording start time not embedded in data files — time-of-day alignment is estimated. Aggregate metrics (TWA, dose, Leq) remain valid." aria-label="Approximate Timestamps: recording start time not embedded in data files, time-of-day alignment is estimated, aggregate metrics remain valid" tabindex="0">Approximate Timestamps</span></div>
         <div class="loc-desc">Active construction zone &mdash; direct exposure for build crew</div>
         <div class="metrics-row">
-          <div class="metric"><div class="value" id="ba-twa">--</div><div class="label">Avg TWA <span class="unit">dBA</span></div></div>
-          <div class="metric"><div class="value" id="ba-leq">--</div><div class="label">Avg Leq <span class="unit">dBA</span></div></div>
+          <div class="metric"><div class="value" id="ba-twa">--</div><div class="label">OSHA TWA <span class="unit">dBA</span></div></div>
+          <div class="metric"><div class="value" id="ba-leq">--</div><div class="label">Avg L<sub>eq</sub> <span class="unit">dBA</span></div></div>
           <div class="metric"><div class="value" id="ba-peak">--</div><div class="label">Max Peak <span class="unit">dBA</span></div></div>
         </div>
+        <div class="daily-strip-label">Daily OSHA TWA</div>
         <div class="daily-strip" id="ba-daily"></div>
       </div>
     </div>
@@ -2013,7 +2030,7 @@ function populateKPIs() {
     const el = document.getElementById(prefix + '-daily');
     el.innerHTML = recs.map(r => {
       const color = r.osha_twa >= 90 ? C.danger : r.osha_twa >= 85 ? C.caution : r.osha_twa >= 80 ? '#EA580C' : C.safe;
-      return `<div class="daily-chip"><div class="day">${DATE_LABELS[r.date]}</div><div class="twa-val" style="color:${color}">${r.osha_twa}</div></div>`;
+      return `<div class="daily-chip"><div class="day">${DATE_LABELS[r.date]}</div><div class="twa-val" style="color:${color}">${r.osha_twa} <span class="twa-unit">dBA</span></div></div>`;
     }).join('');
   });
 }
