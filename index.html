@@ -180,6 +180,11 @@ body {
   padding: 24px;
   position: relative;
   overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.loc-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
 }
 .loc-card::before {
   content: '';
@@ -319,6 +324,8 @@ body {
   font-weight: 700;
   color: var(--text);
   margin-bottom: 4px;
+  padding-left: 12px;
+  border-left: 3px solid var(--purple);
 }
 .chart-section .chart-desc {
   font-size: 12px;
@@ -422,7 +429,8 @@ body {
   font-variant-numeric: tabular-nums;
 }
 .summary-table tbody tr:last-child td { border-bottom: none; }
-.summary-table tbody tr:hover { background: var(--bg-alt); }
+.summary-table tbody tr:nth-child(even) { background: var(--purple-lighter); }
+.summary-table tbody tr:hover { background: var(--purple-light); transition: background 0.15s ease; }
 .status-badge {
   display: inline-block;
   padding: 3px 10px;
@@ -523,6 +531,10 @@ body {
   border-radius: 12px;
   padding: 24px;
   overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+.exp-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 .exp-card-title {
   font-size: 12px;
@@ -606,6 +618,11 @@ svg text { font-family: 'Roboto', sans-serif; }
   background: var(--bg-alt);
   border: 1px solid var(--border-light);
   border-radius: 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.why-card:hover {
+  border-color: var(--purple-medium);
+  box-shadow: 0 2px 8px rgba(108,43,217,0.06);
 }
 .why-card h4 {
   font-size: 13px;
@@ -1026,6 +1043,24 @@ svg text { font-family: 'Roboto', sans-serif; }
   .metric .value { font-size: 22px; }
   .guide-level { padding: 12px; }
   .guide-level .guide-level-value { font-size: 22px; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white; }
+  .site-header, .tab-bar, .date-toggle, .custom-legend .legend-dot,
+  .footer, #tooltip { display: none !important; }
+  .tab-content { display: block !important; opacity: 1 !important; }
+  .tab-content:not(#tab-assessment):not(#tab-methodology) { display: none !important; }
+  .page { padding: 0; max-width: 100%; }
+  .hero { padding: 20px 0 0; border: none; }
+  .finding-badge { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .loc-card, .chart-section, .exp-card, .sparkline-card, .why-card { break-inside: avoid; }
+  .chart-wrap { height: auto !important; }
+  canvas { max-width: 100%; height: auto !important; }
+  .reveal { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .summary-table tbody tr:nth-child(even) { background: #f8f9fa !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .status-badge { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
 </style>
 </head>
