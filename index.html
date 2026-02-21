@@ -1431,8 +1431,8 @@ svg text { font-family: 'Roboto', sans-serif; }
             </div>
             <div class="check-row">
               <div class="check-icon check-pass">7</div>
-              <div class="check-name">Percentile Ordering</div>
-              <div class="check-detail">Verify L<sub>90</sub> &le; L<sub>75</sub> &le; L<sub>50</sub> &le; L<sub>25</sub> &le; L<sub>10</sub>. This is a statistical invariant. Failure indicates a sort direction error or incorrect percentile indexing.</div>
+              <div class="check-name">Percentile Ordering &amp; Value Verification</div>
+              <div class="check-detail">Verify L<sub>90</sub> &le; L<sub>75</sub> &le; L<sub>50</sub> &le; L<sub>25</sub> &le; L<sub>10</sub> (statistical invariant &mdash; failure indicates sort direction error or incorrect percentile indexing). Additionally, all reported values (OSHA TWA, OSHA dose, L<sub>eq</sub>, NIOSH TWA, NIOSH dose, and statistical levels) are independently recomputed from raw data and cross-referenced against the dashboard to confirm agreement within rounding tolerance.</div>
             </div>
           </div>
         </div>
@@ -1476,25 +1476,6 @@ svg text { font-family: 'Roboto', sans-serif; }
           <p class="meth-p" style="margin-top:12px;text-align:center;font-weight:600;color:var(--safe);">21 of 21 validation checks passed (100%) across 910,393 Bullpen data points</p>
         </div>
 
-        <div class="meth-subsection">
-          <h3>Verified vs. Original Values</h3>
-          <p class="meth-p">The independent verification produced values within ~1 dB of the original dashboard analysis for TWA and within ~0.2 dB for L<sub>eq</sub>. Differences are attributable to the original analysis using a slightly different shift duration assumption (fixed 8.0 hours vs. actual recording duration). The verified values below are now used in the dashboard.</p>
-          <table class="summary-table" style="margin-top:8px;">
-            <thead><tr><th>Date</th><th>Metric</th><th>Original</th><th>Verified</th><th>&Delta;</th></tr></thead>
-            <tbody>
-              <tr><td rowspan="3"><strong>Feb 11</strong></td><td>OSHA TWA</td><td>67.0</td><td>67.76</td><td style="color:var(--text-muted)">+0.76</td></tr>
-              <tr><td>L<sub>eq</sub></td><td>78.0</td><td>78.21</td><td style="color:var(--text-muted)">+0.21</td></tr>
-              <tr><td>NIOSH TWA</td><td>72.7</td><td>77.95</td><td style="color:var(--caution)">+5.25</td></tr>
-              <tr><td rowspan="3"><strong>Feb 12</strong></td><td>OSHA TWA</td><td>71.7</td><td>71.77</td><td style="color:var(--text-muted)">+0.07</td></tr>
-              <tr><td>L<sub>eq</sub></td><td>79.4</td><td>79.32</td><td style="color:var(--text-muted)">&minus;0.08</td></tr>
-              <tr><td>NIOSH TWA</td><td>74.5</td><td>78.74</td><td style="color:var(--caution)">+4.24</td></tr>
-              <tr><td rowspan="3"><strong>Feb 13</strong></td><td>OSHA TWA</td><td>69.2</td><td>69.69</td><td style="color:var(--text-muted)">+0.49</td></tr>
-              <tr><td>L<sub>eq</sub></td><td>77.5</td><td>77.38</td><td style="color:var(--text-muted)">&minus;0.12</td></tr>
-              <tr><td>NIOSH TWA</td><td>71.6</td><td>77.22</td><td style="color:var(--caution)">+5.62</td></tr>
-            </tbody>
-          </table>
-          <p class="meth-p" style="margin-top:8px;">Note: The largest discrepancies appear in NIOSH TWA values. The original analysis likely used a different NIOSH calculation approach or exchange rate implementation. The verified values use the standard NIOSH 3 dB equal-energy exchange rate per the 1998 Criteria Document.</p>
-        </div>
       </div>
     </div>
 
