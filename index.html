@@ -2268,6 +2268,11 @@ function drawHeatmap(containerId, data, locColor, locName) {
   const y = d3.scaleBand().domain(dates).range([0, height]).padding(0.08);
   const colorScale = d3.scaleSequential().domain([55, 105]).interpolator(d3.interpolateRgbBasis(['#F8FAFC','#DBEAFE','#93C5FD','#6C2BD9','#9333EA','#DC2626','#EA580C','#FACC15']));
 
+  // Background fill for each row so gaps read as "no data" instead of empty
+  dates.forEach(d => {
+    svg.append('rect').attr('x', 0).attr('y', y(d)).attr('width', width).attr('height', y.bandwidth()).attr('fill', C.border).attr('opacity', 0.3).attr('rx', 2);
+  });
+
   data.forEach((d, i) => {
     svg.append('rect').attr('x', x(d.minuteOfDay)).attr('y', y(d.date)).attr('width', cellW + 0.5).attr('height', y.bandwidth()).attr('fill', colorScale(d.leq)).attr('opacity', 0)
       .on('mouseover', function(evt) { const h = Math.floor(d.minuteOfDay/60), m = d.minuteOfDay%60; const ts = (h>12?h-12:h)+':'+String(m).padStart(2,'0')+(h>=12?' PM':' AM'); showTip(evt, `<strong>${locName}</strong><br>${d.date}<br>${ts}<br>Leq: <strong>${d.leq.toFixed(1)} dBA</strong>`); d3.select(this).attr('stroke', C.text).attr('stroke-width', 1); })
