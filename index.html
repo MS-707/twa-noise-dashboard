@@ -223,7 +223,7 @@ body {
 }
 
 /* ═══ MAIN CONTENT ═══ */
-.page { max-width: 1280px; margin: 0 auto; padding: 24px 24px calc(64px + env(safe-area-inset-bottom)); }
+.page { max-width: 1328px; margin: 0 auto; padding: 24px 24px calc(64px + env(safe-area-inset-bottom)); }
 .tab-content { display: none; opacity: 0; transition: opacity 0.25s ease; }
 .tab-content.active { display: block; opacity: 1; }
 
@@ -357,6 +357,9 @@ body {
 .ts-badge:hover::after,
 .ts-badge:focus::after {
   opacity: 1;
+}
+@media (hover: none) {
+  .ts-badge::after { display: none; }
 }
 .ts-verified {
   background: var(--safe-light);
@@ -1099,7 +1102,7 @@ svg text { font-family: 'Roboto', sans-serif; }
   .hero h1 { font-size: 22px; }
   .hero .subtitle { font-size: 13px; }
   .page { padding: 16px 16px calc(48px + env(safe-area-inset-bottom)); }
-  .tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; position: relative; }
+  .tab-bar { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; position: relative; overscroll-behavior-x: contain; }
   .tab-bar::-webkit-scrollbar { display: none; }
   .tab-bar-wrap { position: relative; }
   .tab-bar-wrap::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 32px; background: linear-gradient(to right, transparent, var(--bg)); pointer-events: none; z-index: 2; }
