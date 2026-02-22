@@ -846,27 +846,6 @@ svg text { font-family: 'Roboto', sans-serif; }
 }
 
 /* ═══ NON-TECHNICAL GUIDE ═══ */
-.guide-hero {
-  background: var(--safe-light);
-  border: 1px solid rgba(22,163,74,0.15);
-  border-radius: 12px;
-  padding: 28px 32px;
-  margin-bottom: 32px;
-  text-align: center;
-}
-.guide-hero h3 {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--safe);
-  margin-bottom: 8px;
-}
-.guide-hero p {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 680px;
-  margin: 0 auto;
-}
 .guide-card {
   background: var(--bg);
   border: 1px solid var(--border);
@@ -1041,7 +1020,6 @@ svg text { font-family: 'Roboto', sans-serif; }
   .faq-q { font-size: 13px; }
   .exp-card { padding: 16px; }
   .guide-card { padding: 16px; }
-  .guide-hero { padding: 24px 16px; }
   .guide-scope { padding: 16px; }
 }
 
@@ -1602,10 +1580,7 @@ svg text { font-family: 'Roboto', sans-serif; }
   <!-- ═══ TAB 4: NON-TECHNICAL GUIDE ═══ -->
   <div id="tab-guide" class="tab-content" role="tabpanel" aria-labelledby="tab-guide-btn">
 
-    <div class="guide-hero">
-      <h3>Office Noise Levels Were Within Safe Ranges</h3>
-      <p>Over three days of continuous monitoring in February 2026, the noise levels measured in the Bullpen / office area were <strong>consistently well below</strong> every federal threshold for hearing protection. Here is what that means for you.</p>
-    </div>
+    <p style="font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:28px;">Over three days of continuous area monitoring in February 2026, noise levels observed at the Bullpen / office location were <strong>consistently below</strong> federal regulatory thresholds for hearing protection. Here is what that means in practice.</p>
 
     <div class="exp-section">
       <div class="exp-section-header">
@@ -1614,9 +1589,10 @@ svg text { font-family: 'Roboto', sans-serif; }
       </div>
 
       <div class="guide-card">
-        <h4><span class="guide-icon guide-icon-safe">&#10003;</span> Your hearing is not at risk from normal office noise at this site</h4>
-        <p>We placed a professional-grade microphone in the Bullpen area and recorded continuously for three full work days (February 11&ndash;13, 2026). The microphone captured nearly one million individual sound level readings at a rate of 10 per second.</p>
-        <p>The recorded levels were evaluated against two regulatory standards: the <strong>OSHA Permissible Exposure Limit (PEL)</strong> of 90 dBA and the more protective <strong>NIOSH Recommended Exposure Limit (REL)</strong> of 85 dBA. On every day measured, the office area was below both of these limits by a wide margin.</p>
+        <h4><span class="guide-icon guide-icon-safe">&#10003;</span> Observed area noise levels did not approach regulatory action thresholds</h4>
+        <p>A professional-grade microphone was placed in the Bullpen area and recorded continuously for three full work days (February 11&ndash;13, 2026), capturing nearly one million individual sound level readings at a rate of 10 per second.</p>
+        <p>The recorded levels were evaluated against two regulatory standards: the <strong>OSHA Permissible Exposure Limit (PEL)</strong> of 90 dBA and the more protective <strong>NIOSH Recommended Exposure Limit (REL)</strong> of 85 dBA. On every day measured, area noise levels were below both of these thresholds by a wide margin.</p>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:12px;font-style:italic;">Note: This was an area monitoring assessment. Results reflect noise levels at the monitoring location and should not be interpreted as individual worker exposure determinations.</p>
       </div>
 
       <div class="guide-comparison">
@@ -1634,7 +1610,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
       <div class="guide-card">
         <h4><span class="guide-icon guide-icon-info">&#8505;</span> What do those numbers actually mean?</h4>
-        <p><strong>71.8 dBA</strong> is comparable to the background noise level in a busy restaurant or a car traveling at highway speed with the windows up. It is noticeably louder than a quiet office (around 50&ndash;55 dBA) because the Bullpen sits adjacent to an active construction area, but it is far below levels that pose any risk to hearing.</p>
+        <p><strong>71.8 dBA</strong> is comparable to the background noise level in a busy restaurant or a car traveling at highway speed with the windows up. It is noticeably louder than a quiet office (around 50&ndash;55 dBA) because the Bullpen sits adjacent to an active construction area, but it is well below levels that would trigger regulatory action.</p>
         <p>The <strong>85 dBA action level</strong> is roughly the volume of a food blender or a busy city street. At that level, OSHA requires employers to offer hearing protection and annual hearing tests. The office area did not come close to that threshold on any day measured.</p>
         <p>The <strong>90 dBA permissible exposure limit</strong> is about as loud as a lawn mower at operating distance. Sustained exposure at or above that level over an 8-hour shift requires hearing protection. The office area was nearly 20 dBA below this &mdash; and because the decibel scale is logarithmic, that represents roughly a 100-fold difference in sound energy.</p>
       </div>
@@ -1671,7 +1647,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
       <div class="guide-card">
         <h4><span class="guide-icon guide-icon-safe">&#10003;</span> &ldquo;Some moments seem really loud &mdash; what about the peaks?&rdquo;</h4>
-        <p>The loudest single reading in the Bullpen over three days was <strong>106.9 dBA</strong> (a brief impulse on February 13). Occasional short peaks are normal &mdash; a door slamming nearby can register over 100 dBA for a fraction of a second. Hearing risk is determined by <strong>sustained average exposure over the full work shift</strong>, not by individual spikes. The daily averages (TWA) account for both loud and quiet periods, and those averages were well within safe ranges every day.</p>
+        <p>The loudest single reading in the Bullpen over three days was <strong>106.9 dBA</strong> (a brief impulse on February 13). Occasional short peaks are normal &mdash; a door slamming nearby can register over 100 dBA for a fraction of a second. Hearing risk is determined by <strong>sustained average exposure over the full work shift</strong>, not by individual spikes. The daily averages (TWA) account for both loud and quiet periods, and those averages were below regulatory thresholds on every day monitored.</p>
       </div>
 
       <div class="guide-card">
