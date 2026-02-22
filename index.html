@@ -1986,12 +1986,13 @@ const baseOptions = {
 // ═══════════════════════════════════════════════════════════════
 // ASSESSMENT TAB: KPIs
 // ═══════════════════════════════════════════════════════════════
-function animateValue(el, target, duration) {
+function animateValue(el, target, duration, decimals) {
+  var dp = decimals !== undefined ? decimals : 1;
   const start = performance.now();
   const update = (now) => {
     const t = Math.min((now - start) / duration, 1);
     const ease = 1 - Math.pow(1 - t, 3);
-    el.textContent = (target * ease).toFixed(1);
+    el.textContent = (target * ease).toFixed(dp);
     if (t < 1) requestAnimationFrame(update);
   };
   requestAnimationFrame(update);
@@ -2012,10 +2013,13 @@ function populateKPIs() {
   ['bp', 'ba'].forEach((prefix, idx) => {
     const recs = idx === 0 ? bp : ba;
     const el = document.getElementById(prefix + '-daily');
-    el.innerHTML = recs.map(r => {
+    el.innerHTML = recs.map((r, i) => {
       const color = r.osha_twa >= 90 ? C.danger : r.osha_twa >= 85 ? C.caution : r.osha_twa >= 80 ? '#EA580C' : C.safe;
-      return `<div class="daily-chip"><div class="day">${DATE_LABELS[r.date]}</div><div class="twa-val" style="color:${color}">${r.osha_twa} <span class="twa-unit">dBA</span></div></div>`;
+      return `<div class="daily-chip"><div class="day">${DATE_LABELS[r.date]}</div><div class="twa-val" style="color:${color}"><span class="daily-num" id="${prefix}-d${i}">0</span> <span class="twa-unit">dBA</span></div></div>`;
     }).join('');
+    recs.forEach((r, i) => {
+      animateValue(document.getElementById(prefix + '-d' + i), r.osha_twa, dur, 2);
+    });
   });
 }
 
