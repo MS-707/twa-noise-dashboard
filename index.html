@@ -1021,7 +1021,6 @@ svg text { font-family: 'Roboto', sans-serif; }
 /* ═══ RESPONSIVE — 640px (phones) ═══ */
 @media (max-width: 640px) {
   .site-header { padding-left: 16px; padding-right: 16px; }
-  #export-btn span { display: none; }
   .hero { padding: 24px 16px 0; }
   .hero h1 { font-size: 22px; }
   .hero .subtitle { font-size: 13px; }
@@ -1056,22 +1055,6 @@ svg text { font-family: 'Roboto', sans-serif; }
 }
 
 /* ═══ PRINT ═══ */
-@media print {
-  body { background: white; }
-  .site-header, .tab-bar, .date-toggle, .custom-legend .legend-dot,
-  .footer, #tooltip, .header-actions { display: none !important; }
-  .tab-content { display: block !important; opacity: 1 !important; }
-  .tab-content:not(#tab-assessment):not(#tab-methodology) { display: none !important; }
-  .page { padding: 0; max-width: 100%; }
-  .hero { padding: 20px 0 0; border: none; }
-  .finding-badge { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-  .loc-card, .chart-section, .exp-card, .sparkline-card { break-inside: avoid; }
-  .chart-wrap { height: auto !important; }
-  canvas { max-width: 100%; height: auto !important; }
-  .reveal { opacity: 1 !important; transform: none !important; animation: none !important; }
-  .summary-table tbody tr:nth-child(even) { background: #f8f9fa !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-  .status-badge { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-}
 </style>
 </head>
 <body>
@@ -1084,10 +1067,6 @@ svg text { font-family: 'Roboto', sans-serif; }
       <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
         <svg id="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         <svg id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-      <button class="icon-btn" id="export-btn" onclick="exportPDF()" aria-label="Export as PDF">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
-        <span>Export PDF</span>
       </button>
     </div>
   </div>
@@ -1816,33 +1795,6 @@ function toggleTheme() {
 // ═══════════════════════════════════════════════════════════════
 // PDF EXPORT
 // ═══════════════════════════════════════════════════════════════
-function exportPDF() {
-  // Temporarily show Assessment + Methodology for print
-  var panels = document.querySelectorAll('.tab-content');
-  var prev = [];
-  panels.forEach(function(p) { prev.push({ el: p, classes: p.className, style: p.style.cssText }); });
-  document.getElementById('tab-assessment').className = 'tab-content active';
-  document.getElementById('tab-assessment').style.opacity = '1';
-  document.getElementById('tab-methodology').className = 'tab-content active';
-  document.getElementById('tab-methodology').style.opacity = '1';
-  // Hide export button itself during print
-  document.getElementById('export-btn').style.display = 'none';
-  document.getElementById('theme-toggle').style.display = 'none';
-  // If dark mode, temporarily switch to light for clean print
-  var wasDark = document.documentElement.dataset.theme === 'dark';
-  if (wasDark) applyTheme('light');
-  setTimeout(function() {
-    window.print();
-    // Restore state after print dialog
-    setTimeout(function() {
-      prev.forEach(function(p) { p.el.className = p.classes; p.el.style.cssText = p.style; });
-      document.getElementById('export-btn').style.display = '';
-      document.getElementById('theme-toggle').style.display = '';
-      if (wasDark) applyTheme('dark');
-    }, 500);
-  }, 100);
-}
-
 // ═══════════════════════════════════════════════════════════════
 // TAB SWITCHING
 // ═══════════════════════════════════════════════════════════════
