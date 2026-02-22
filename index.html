@@ -1061,6 +1061,7 @@ svg text { font-family: 'Roboto', sans-serif; }
       <button id="tab-assessment-btn" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-assessment" data-tab="assessment" onclick="switchTab('assessment')">Assessment</button>
       <button id="tab-methodology-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-methodology" data-tab="methodology" onclick="switchTab('methodology')">Methodology &amp; Verification</button>
       <button id="tab-guide-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-guide" data-tab="guide" onclick="switchTab('guide')">What This Means for You</button>
+      <button id="tab-about-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-about" data-tab="about" onclick="switchTab('about')">About This Project</button>
     </div>
     </div>
   </div>
@@ -1698,9 +1699,29 @@ svg text { font-family: 'Roboto', sans-serif; }
       </div>
     </div>
 
+    <div class="guide-scope">
+      <h4>Scope of This Assessment</h4>
+      <ul>
+        <li><strong>Type:</strong> Area noise monitoring (fixed microphone placement) &mdash; not personal dosimetry</li>
+        <li><strong>Location measured:</strong> Bullpen / office staging area adjacent to active construction</li>
+        <li><strong>Duration:</strong> Three consecutive work days (February 11&ndash;13, 2026), full shift each day</li>
+        <li><strong>Data collected:</strong> 910,393 sound level readings at 0.1-second intervals</li>
+        <li><strong>Standard applied:</strong> OSHA 29 CFR 1910.95 (PEL 90 dBA, Action Level 85 dBA) and NIOSH REL (85 dBA)</li>
+        <li><strong>Outcome:</strong> All daily time-weighted averages were below the OSHA Action Level &mdash; a Hearing Conservation Program is not triggered by these measurements</li>
+        <li><strong>Limitation:</strong> Area monitoring observations are not a substitute for personal exposure assessment and do not constitute a formal compliance determination</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ═══ TAB 5: ABOUT THIS PROJECT ═══ -->
+  <div id="tab-about" class="tab-content" role="tabpanel" aria-labelledby="tab-about-btn">
+
+    <p style="font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:28px;">This dashboard was built through a collaboration between a Certified Safety Professional and an AI assistant. Here is how it worked, what it means, and where the limitations are.</p>
+
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">06</span>
+        <span class="num">01</span>
         <h2>About the Analyst</h2>
       </div>
 
@@ -1713,16 +1734,75 @@ svg text { font-family: 'Roboto', sans-serif; }
       </div>
     </div>
 
+    <div class="exp-section">
+      <div class="exp-section-header">
+        <span class="num">02</span>
+        <h2>How This Dashboard Was Built</h2>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-info">&#129302;</span> Domain expertise paired with AI tooling</h4>
+        <p>This project was built through an iterative collaboration between a CSP and <strong>Claude Opus 4.6</strong> (Anthropic) via <strong>Claude Code</strong>, a command-line AI development tool. The workflow looked like this:</p>
+        <p>The CSP brought the domain knowledge: understanding of OSHA 29 CFR 1910.95, noise dosimetry mathematics, the distinction between area monitoring and personal dosimetry, how ELT audiences read compliance reports, and the professional judgment to interpret results in context. Claude brought the ability to write and iterate on code rapidly &mdash; building charts, computing energy-averaged metrics from raw data, cross-validating calculations, and refactoring the dashboard through dozens of design iterations in a single working session.</p>
+        <p>Critically, this was not a one-directional process. The collaboration involved genuine back-and-forth: the CSP challenged the AI&rsquo;s initial design choices (statistical charts that were too technical for executives, alarming language for compliant results, color choices that implied danger where none existed), and the AI challenged assumptions in the data (identifying a 1-minute recording artifact that would have created a misleading visual, flagging incomplete hour data, and running energy-average cross-checks against the raw source).</p>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-info">&#9881;</span> Custom skills and institutional knowledge</h4>
+        <p>Over the course of this project, the design lessons learned were encoded into a <strong>reusable skill file</strong> &mdash; a structured set of 24 rules for building EHS dashboards for executive audiences. These rules cover content ordering, language and tone, chart selection, visual design, mobile accessibility, and technical quality. Future EHS dashboards built with this tool will start from these lessons rather than re-learning them.</p>
+        <p>This is a practical example of how AI tooling can compound institutional knowledge: each project teaches the system something that makes the next project faster and more accurate. The skill file is version-controlled and transparent &mdash; every rule traces back to a specific design decision that was tested and evaluated during this build.</p>
+      </div>
+    </div>
+
+    <div class="exp-section">
+      <div class="exp-section-header">
+        <span class="num">03</span>
+        <h2>What This Enables</h2>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-info">&#9889;</span> Faster, deeper analysis from raw data to executive report</h4>
+        <p>A traditional path for this type of work would typically involve engaging an industrial hygiene consulting firm: scheduling a site visit, deploying equipment, collecting data, sending it to the consultant for analysis, receiving a written report, and then separately creating any visualizations or presentations for leadership. That process commonly takes <strong>2&ndash;6 weeks from data collection to final deliverable</strong> and can cost <strong>$3,000&ndash;$10,000+</strong> depending on scope, location, and firm.</p>
+        <p>This dashboard &mdash; from raw instrument data files to a fully interactive, verified, executive-ready report with 7 independent mathematical cross-checks per day &mdash; was built in a matter of days, with the data analysis, visualization, verification, and presentation all happening in a single iterative workflow. The raw data and every computation are embedded directly in the deliverable, making the entire analysis transparent and reproducible.</p>
+        <p>This is not to suggest the traditional approach is unnecessary. Consulting IH firms bring calibrated equipment programs, established sampling protocols, legal defensibility through chain-of-custody documentation, and the depth of experience that comes from conducting hundreds of assessments across industries. The point is that a CSP with domain knowledge and the right AI tooling can now <strong>do more of this work in-house</strong>, more quickly, and at a level of analytical depth and transparency that would be difficult to achieve manually.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-info">&#129309;</span> Complementing, not replacing, industrial hygiene professionals</h4>
+        <p>CSPs and CIHs (Certified Industrial Hygienists) operate in closely related fields. The CIH credential focuses specifically on anticipating, recognizing, evaluating, and controlling workplace health hazards &mdash; noise exposure being one of many. The CSP credential covers a broader safety and health scope. Both credentials are administered by BCSP-affiliated boards and share a commitment to evidence-based workplace protection.</p>
+        <p>This project demonstrates that a CSP equipped with AI tooling can conduct meaningful area noise monitoring analysis, present results at an executive level, and deliver faster turnaround on initial assessments. It does <strong>not</strong> replace scenarios where a CIH or qualified IH consultant is the appropriate resource: formal compliance determinations, personal dosimetry programs, complex multi-hazard exposure assessments, expert witness work, or situations requiring the specific legal weight of an IH professional&rsquo;s signature.</p>
+        <p>The right framing is <strong>force multiplication</strong>: AI tooling allows a safety professional with domain expertise to do more, faster, and with greater analytical transparency &mdash; extending their reach into work that might otherwise wait for external resources or not get done at all.</p>
+      </div>
+    </div>
+
+    <div class="exp-section">
+      <div class="exp-section-header">
+        <span class="num">04</span>
+        <h2>Limitations and Transparency</h2>
+      </div>
+
+      <div class="guide-card">
+        <h4><span class="guide-icon guide-icon-note">&#9888;</span> What this project is and is not</h4>
+        <ul style="margin-top:8px;padding-left:20px;line-height:1.8;color:var(--text-secondary);">
+          <li>This is an <strong>area noise monitoring assessment</strong>, not a personal exposure determination or formal compliance audit</li>
+          <li>The AI assisted with code, computation, visualization, and data verification &mdash; all domain judgments and interpretive conclusions are the responsibility of the CSP</li>
+          <li>Mathematical cross-checks were performed programmatically (7 per day, 21 total), but the underlying data quality depends on proper instrument calibration and deployment, which was managed by the analyst</li>
+          <li>The AI does not have independent knowledge of the physical monitoring environment &mdash; it works with the data as provided and flags anomalies, but cannot verify field conditions</li>
+          <li>Cost and timeline comparisons to traditional IH consulting are estimates based on typical industry ranges and will vary by region, firm, and scope</li>
+          <li>This dashboard is a demonstration of what is possible when domain expertise meets AI tooling &mdash; it should be evaluated on the quality of its analysis and transparency, not on the novelty of how it was built</li>
+        </ul>
+      </div>
+    </div>
+
     <div class="guide-scope">
-      <h4>Scope of This Assessment</h4>
+      <h4>Project Details</h4>
       <ul>
-        <li><strong>Type:</strong> Area noise monitoring (fixed microphone placement) &mdash; not personal dosimetry</li>
-        <li><strong>Location measured:</strong> Bullpen / office staging area adjacent to active construction</li>
-        <li><strong>Duration:</strong> Three consecutive work days (February 11&ndash;13, 2026), full shift each day</li>
-        <li><strong>Data collected:</strong> 910,393 sound level readings at 0.1-second intervals</li>
-        <li><strong>Standard applied:</strong> OSHA 29 CFR 1910.95 (PEL 90 dBA, Action Level 85 dBA) and NIOSH REL (85 dBA)</li>
-        <li><strong>Outcome:</strong> All daily time-weighted averages were below the OSHA Action Level &mdash; a Hearing Conservation Program is not triggered by these measurements</li>
-        <li><strong>Limitation:</strong> Area monitoring observations are not a substitute for personal exposure assessment and do not constitute a formal compliance determination</li>
+        <li><strong>Analyst:</strong> Mark Starr, CSP (CSP-48378) &mdash; <a href="https://badge.bcsp.org/?e=NDY0NDIyfDU2OTE1ODl8MTAwMTg3MTk4Mw==" target="_blank" rel="noopener" style="color:var(--purple)">Verify credential</a></li>
+        <li><strong>AI assistant:</strong> Claude Opus 4.6 (Anthropic) via Claude Code CLI</li>
+        <li><strong>Data processing:</strong> Python script with 21 independent mathematical cross-checks</li>
+        <li><strong>Dashboard:</strong> Single-file HTML with Chart.js and D3.js &mdash; no build step, no framework, fully self-contained</li>
+        <li><strong>Source data:</strong> ~2.9 million raw readings from PCB 130f21 microphones via Dewesoft IOLite 8xACC DAQ</li>
+        <li><strong>Version control:</strong> All code and iterations tracked in Git with full commit history</li>
       </ul>
     </div>
 
