@@ -2279,7 +2279,14 @@ function buildTimeInZone() {
       ...baseOptions,
       indexAxis: 'y',
       layout: { padding: { left: 8 } },
-      animation: { duration: 1000, easing: 'easeOutQuart' },
+      animation: {
+        duration: 1200,
+        easing: 'easeOutQuart',
+        delay: function(ctx) {
+          // Stagger bars top-to-bottom, zones left-to-right
+          return ctx.dataIndex * 120 + ctx.datasetIndex * 60;
+        },
+      },
       scales: {
         x: { stacked: true, min: 0, max: 100, beginAtZero: true, grid: { display: false }, ticks: { callback: v => v + '%', font: { family: 'Roboto', size: 11 }, color: C.tick } },
         y: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Roboto', size: 11, weight: 500 }, color: C.tick, padding: 4 } },
