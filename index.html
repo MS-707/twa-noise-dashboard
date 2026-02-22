@@ -92,47 +92,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ═══ HEADER ═══ */
-.site-header {
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  padding-top: env(safe-area-inset-top);
-}
-.site-header-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-.logo svg { flex-shrink: 0; }
-.logo-text {
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  color: var(--text);
-}
-.logo-dot {
-  color: var(--purple);
-}
-.header-meta {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 400;
-}
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+/* ═══ HEADER (removed — theme toggle lives in hero) ═══ */
 .icon-btn {
   background: var(--bg-alt);
   border: 1px solid var(--border);
@@ -159,11 +119,18 @@ body {
 .hero {
   background: var(--bg);
   border-bottom: 1px solid var(--border);
-  padding: 40px 24px 0;
+  padding: 24px 24px 0;
+  padding-top: calc(24px + env(safe-area-inset-top));
 }
 .hero-inner {
   max-width: 1280px;
   margin: 0 auto;
+}
+.hero-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 .hero h1 {
   font-size: 28px;
@@ -990,8 +957,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
 /* ═══ RESPONSIVE — 640px (phones) ═══ */
 @media (max-width: 640px) {
-  .site-header { padding-left: 16px; padding-right: 16px; }
-  .hero { padding: 24px 16px 0; }
+  .hero { padding: 16px 16px 0; padding-top: calc(16px + env(safe-area-inset-top)); }
   .hero h1 { font-size: 22px; }
   .hero .subtitle { font-size: 13px; }
   .page { padding: 16px 16px calc(48px + env(safe-area-inset-bottom)); }
@@ -1028,23 +994,16 @@ svg text { font-family: 'Roboto', sans-serif; }
 </head>
 <body>
 
-<!-- ═══ SITE HEADER ═══ -->
-<header class="site-header">
-  <div class="site-header-inner">
-    <span class="header-meta">EHS Noise Monitoring Report</span>
-    <div class="header-actions">
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-title-row">
+      <h1>Noise Exposure Assessment</h1>
       <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
         <svg id="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         <svg id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
     </div>
-  </div>
-</header>
-
-<!-- ═══ HERO ═══ -->
-<div class="hero">
-  <div class="hero-inner">
-    <h1>Noise Exposure Assessment</h1>
     <div class="subtitle">Project: P4 Build &bull; February 11&ndash;13, 2026 &bull; 2,926,709 readings analyzed</div>
     <div class="tab-bar-wrap">
     <div class="tab-bar" role="tablist" aria-label="Dashboard sections">
