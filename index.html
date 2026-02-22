@@ -2176,8 +2176,8 @@ function buildOverlayChart(selectedDate) {
   const datasets = [];
   datesToShow.forEach((d, di) => {
     const pts = DATA.overlay[d];
-    const opacity = selectedDate === 'all' ? [1, 0.5, 0.25][di] : 1;
-    const dash = selectedDate === 'all' ? [[], [8,4], [4,4]][di] : [];
+    const opacity = selectedDate === 'all' ? [1, 0.6, 0.35][di] : 1;
+    const lineW = selectedDate === 'all' ? [2.5, 2, 1.5][di] : 2.5;
     if (showBp) {
       datasets.push({
         label: (isSolo ? '' : 'Bullpen ') + DATE_LABELS[d],
@@ -2185,8 +2185,7 @@ function buildOverlayChart(selectedDate) {
         borderColor: `rgba(${C.bullpenRgba},${opacity})`,
         backgroundColor: (isSolo && selectedDate !== 'all') ? `rgba(${C.bullpenRgba},0.08)` : 'transparent',
         fill: isSolo && selectedDate !== 'all',
-        borderWidth: selectedDate === 'all' ? 2 : 2.5,
-        borderDash: dash,
+        borderWidth: lineW,
         pointRadius: selectedDate === 'all' ? 0 : 4,
         pointBackgroundColor: C.bullpen,
         tension: isSolo ? 0.2 : 0,
@@ -2200,8 +2199,7 @@ function buildOverlayChart(selectedDate) {
         borderColor: `rgba(${C.buildRgba},${opacity})`,
         backgroundColor: (isSolo && selectedDate !== 'all') ? `rgba(${C.buildRgba},0.06)` : 'transparent',
         fill: isSolo && selectedDate !== 'all',
-        borderWidth: selectedDate === 'all' ? 2 : 2.5,
-        borderDash: dash,
+        borderWidth: lineW,
         pointRadius: selectedDate === 'all' ? 0 : 4,
         pointBackgroundColor: C.build,
         tension: isSolo ? 0.2 : 0,
