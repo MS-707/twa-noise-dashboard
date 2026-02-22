@@ -519,14 +519,6 @@ body {
   font-weight: 700;
   color: var(--text);
 }
-.exp-section-header .num {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--purple);
-  background: var(--purple-light);
-  padding: 2px 10px;
-  border-radius: 12px;
-}
 .exp-desc {
   color: var(--text-secondary);
   font-size: 13px;
@@ -1142,7 +1134,7 @@ svg text { font-family: 'Roboto', sans-serif; }
     <!-- SECTION 01: INSTRUMENTATION -->
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">01</span>
+
         <div>
           <h2>Instrumentation &amp; Data Acquisition</h2>
           <p class="exp-desc">Complete measurement chain from acoustic transducer through data export.</p>
@@ -1192,7 +1184,7 @@ svg text { font-family: 'Roboto', sans-serif; }
     <!-- SECTION 02: MATHEMATICAL FRAMEWORK -->
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">02</span>
+
         <div>
           <h2>Mathematical Framework</h2>
           <p class="exp-desc">Complete derivations for all noise exposure metrics, per OSHA 29 CFR 1910.95 and NIOSH Criteria for a Recommended Standard (1998).</p>
@@ -1270,7 +1262,7 @@ svg text { font-family: 'Roboto', sans-serif; }
     <!-- SECTION 03: DATA PROCESSING PIPELINE -->
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">03</span>
+
         <div>
           <h2>Data Processing Pipeline</h2>
           <p class="exp-desc">End-to-end data flow from raw acquisition through independently verified results.</p>
@@ -1333,7 +1325,7 @@ svg text { font-family: 'Roboto', sans-serif; }
     <!-- SECTION 04: VERIFICATION RESULTS -->
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">04</span>
+
         <div>
           <h2>Verification Process &amp; Results</h2>
           <p class="exp-desc">Seven independent cross-validation checks applied to each data file. All 21 checks passed.</p>
@@ -1427,7 +1419,7 @@ svg text { font-family: 'Roboto', sans-serif; }
     <!-- SECTION 05: LIMITATIONS -->
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">05</span>
+
         <div>
           <h2>Limitations &amp; Assumptions</h2>
           <p class="exp-desc">Transparent disclosure of methodological constraints, consistent with academic reporting standards.</p>
@@ -1475,7 +1467,7 @@ svg text { font-family: 'Roboto', sans-serif; }
     <!-- SECTION 06: FAQ -->
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">06</span>
+
         <div>
           <h2>Common Questions</h2>
           <p class="exp-desc">Anticipated questions from reviewing engineers and colleagues.</p>
@@ -1534,7 +1526,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">01</span>
+
         <h2>Exposure Assessment Summary</h2>
       </div>
 
@@ -1568,7 +1560,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">02</span>
+
         <h2>How the Monitoring Worked</h2>
       </div>
 
@@ -1586,7 +1578,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">03</span>
+
         <h2>Why the Daily Average Matters More Than Loud Moments</h2>
       </div>
 
@@ -1605,7 +1597,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">04</span>
+
         <h2>Common Concerns</h2>
       </div>
 
@@ -1632,7 +1624,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">05</span>
+
         <h2>What Happens Next</h2>
       </div>
 
@@ -1670,7 +1662,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">01</span>
+
         <h2>About the Analyst</h2>
       </div>
 
@@ -1684,7 +1676,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">02</span>
+
         <h2>How This Dashboard Was Built</h2>
       </div>
 
@@ -1714,7 +1706,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">03</span>
+
         <h2>What This Enables</h2>
       </div>
 
@@ -1735,7 +1727,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="exp-section">
       <div class="exp-section-header">
-        <span class="num">04</span>
+
         <h2>Limitations and Transparency</h2>
       </div>
 
@@ -1838,7 +1830,7 @@ function toggleTheme() {
 (function initTheme() {
   var saved = localStorage.getItem('twa-theme');
   if (saved) { applyTheme(saved); }
-  else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { applyTheme('dark'); }
+  else { applyTheme('dark'); }
 })();
 
 // ═══════════════════════════════════════════════════════════════
@@ -2118,7 +2110,10 @@ function buildDoseChart(selectedDate) {
 }
 
 function buildTWABars() {
-  const ctx = document.getElementById('chart-twa-bars').getContext('2d');
+  const canvas = document.getElementById('chart-twa-bars');
+  const prev = Chart.getChart(canvas);
+  if (prev) prev.destroy();
+  const ctx = canvas.getContext('2d');
   const dates = ['2026-02-11', '2026-02-12', '2026-02-13'];
   const bpTWA = dates.map(d => DATA.summary.find(r => r.location === 'Bullpen' && r.date === d)?.osha_twa || 0);
   const baTWA = dates.map(d => DATA.summary.find(r => r.location === 'Build Area' && r.date === d)?.osha_twa || 0);
