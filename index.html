@@ -660,6 +660,14 @@ body {
 .exp-card:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
+.chart-section .exp-card {
+  background: var(--bg-alt);
+  border: 1px solid var(--border-light);
+  padding: 16px;
+}
+.chart-section .exp-card:hover {
+  box-shadow: none;
+}
 .exp-card-title {
   font-size: 12px;
   font-weight: 700;
@@ -1222,6 +1230,28 @@ svg text { font-family: 'Roboto', sans-serif; }
       </div>
     </div>
 
+    <div class="chart-section chart-card">
+      <div class="chart-title">Daily TWA Comparison</div>
+      <div class="chart-desc">OSHA TWA by date for each monitoring location, with regulatory threshold reference lines</div>
+      <div class="chart-wrap"><canvas id="chart-twa-bars" role="img" aria-label="Bar chart comparing daily OSHA Time-Weighted Average values by location with regulatory threshold lines"></canvas></div>
+    </div>
+
+    <!-- NOISE EXPOSURE DURATION -->
+    <div class="chart-section chart-card">
+      <div class="chart-title">Noise Exposure Duration</div>
+      <div class="chart-desc">What percentage of each workday was spent in each noise zone? Stacked bars show time-in-zone for every location and date, computed from minute-level readings.</div>
+      <div class="exp-legend">
+        <div class="exp-legend-item"><div class="exp-legend-dot" style="background:#16A34A"></div>&lt; 75 dBA</div>
+        <div class="exp-legend-item"><div class="exp-legend-dot" style="background:var(--moderate)"></div>75&ndash;80 dBA</div>
+        <div class="exp-legend-item"><div class="exp-legend-dot" style="background:#CA8A04"></div>80&ndash;85 dBA</div>
+        <div class="exp-legend-item"><div class="exp-legend-dot" style="background:var(--elevated)"></div>85&ndash;90 dBA</div>
+        <div class="exp-legend-item"><div class="exp-legend-dot" style="background:#B45309"></div>90+ dBA</div>
+      </div>
+      <div style="position:relative;height:340px;">
+        <canvas id="time-in-zone-chart" role="img" aria-label="Stacked bar chart showing percentage of workday spent in each noise exposure zone by location and date"></canvas>
+      </div>
+    </div>
+
     <div class="chart-row">
       <div class="chart-section chart-card">
         <div class="chart-title">Noise Level Distribution</div>
@@ -1235,12 +1265,6 @@ svg text { font-family: 'Roboto', sans-serif; }
         <div class="date-toggle" id="dose-toggle"></div>
         <div class="chart-wrap"><canvas id="chart-dose" role="img" aria-label="Line chart showing cumulative OSHA noise dose percentage over each work shift"></canvas></div>
       </div>
-    </div>
-
-    <div class="chart-section chart-card">
-      <div class="chart-title">Daily TWA Comparison</div>
-      <div class="chart-desc">OSHA TWA by date for each monitoring location, with regulatory threshold reference lines</div>
-      <div class="chart-wrap"><canvas id="chart-twa-bars" role="img" aria-label="Bar chart comparing daily OSHA Time-Weighted Average values by location with regulatory threshold lines"></canvas></div>
     </div>
 
     <div class="chart-section chart-card">
@@ -1263,24 +1287,6 @@ svg text { font-family: 'Roboto', sans-serif; }
         </thead>
         <tbody id="summary-tbody"></tbody>
       </table>
-      </div>
-    </div>
-
-    <!-- NOISE EXPOSURE DURATION -->
-    <div class="chart-section">
-      <div class="chart-title">Noise Exposure Duration</div>
-      <div class="chart-desc">What percentage of each workday was spent in each noise zone? Stacked bars show time-in-zone for every location and date, computed from minute-level readings.</div>
-      <div class="exp-card">
-        <div class="exp-legend">
-          <div class="exp-legend-item"><div class="exp-legend-dot" style="background:#16A34A"></div>&lt; 75 dBA</div>
-          <div class="exp-legend-item"><div class="exp-legend-dot" style="background:var(--moderate)"></div>75&ndash;80 dBA</div>
-          <div class="exp-legend-item"><div class="exp-legend-dot" style="background:#CA8A04"></div>80&ndash;85 dBA</div>
-          <div class="exp-legend-item"><div class="exp-legend-dot" style="background:var(--elevated)"></div>85&ndash;90 dBA</div>
-          <div class="exp-legend-item"><div class="exp-legend-dot" style="background:#B45309"></div>90+ dBA</div>
-        </div>
-        <div style="position:relative;height:340px;">
-          <canvas id="time-in-zone-chart" role="img" aria-label="Stacked bar chart showing percentage of workday spent in each noise exposure zone by location and date"></canvas>
-        </div>
       </div>
     </div>
 
