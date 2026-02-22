@@ -2453,9 +2453,10 @@ function buildTimeInZone() {
       barLabels.push(loc.split(' ')[0] + ' ' + DATE_LABELS[d]);
       const minutes = HEATMAP_DATA[loc].filter(m => m.date === d);
       const total = minutes.length || 1;
+      const rawPcts = zones.map(z => minutes.filter(m => m.leq >= z.min && m.leq < z.max).length / total * 100);
+      const rawSum = rawPcts.reduce((a, b) => a + b, 0);
       zones.forEach((z, zi) => {
-        const count = minutes.filter(m => m.leq >= z.min && m.leq < z.max).length;
-        zoneCounts[zi].push(+(count / total * 100).toFixed(1));
+        zoneCounts[zi].push(rawSum > 0 ? +(rawPcts[zi] / rawSum * 100).toFixed(1) : 0);
       });
     });
   });
@@ -2468,16 +2469,17 @@ function buildTimeInZone() {
         data: zoneCounts[i],
         backgroundColor: z.color,
         borderRadius: i === zones.length - 1 ? { topRight: 4, bottomRight: 4 } : (i === 0 ? { topLeft: 4, bottomLeft: 4 } : 0),
-        borderSkipped: false,
+        borderSkipped: i === 0 || i === zones.length - 1 ? false : true,
       })),
     },
     options: {
       ...baseOptions,
       indexAxis: 'y',
+      layout: { padding: { left: 8 } },
       animation: { duration: 1000, easing: 'easeOutQuart' },
       scales: {
-        x: { stacked: true, max: 100, grid: { display: false }, ticks: { callback: v => v + '%', font: { family: 'Roboto', size: 11 }, color: C.tick } },
-        y: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Roboto', size: 11, weight: 500 }, color: C.tick } },
+        x: { stacked: true, min: 0, max: 100, beginAtZero: true, grid: { display: false }, ticks: { callback: v => v + '%', font: { family: 'Roboto', size: 11 }, color: C.tick } },
+        y: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Roboto', size: 11, weight: 500 }, color: C.tick, padding: 4 } },
       },
       plugins: {
         ...baseOptions.plugins,
