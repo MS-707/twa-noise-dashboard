@@ -2355,7 +2355,7 @@ function buildHeatmaps() {
 // THEME-AWARE CHART REBUILD
 // ═══════════════════════════════════════════════════════════════
 function rebuildAssessmentCharts() {
-  // Get active date selections before rebuild
+  // Theme toggle: force-rebuild everything and mark as built for observer
   var distDate = document.querySelector('#dist-toggle .date-btn.active');
   var doseDate = document.querySelector('#dose-toggle .date-btn.active');
   var dd = distDate ? distDate.dataset.val : 'all';
@@ -2363,37 +2363,56 @@ function rebuildAssessmentCharts() {
   buildDistChart(dd);
   buildDoseChart(dosd);
   buildTWABars();
-  // Rebuild sparklines (D3 — need to clear + redraw)
   document.getElementById('sparkline-grid').innerHTML = '';
   buildSparklines();
   buildTable();
-  // Rebuild KPI daily chips (inline colors from C.*)
   populateKPIs();
-  // Rebuild time-in-zone chart
   var tzCanvas = document.getElementById('time-in-zone-chart');
   var tzInstance = Chart.getChart(tzCanvas);
   if (tzInstance) tzInstance.destroy();
   buildTimeInZone();
-  // Rebuild heatmaps (D3 SVGs with inline fill/stroke attributes)
   document.getElementById('heatmap-bullpen').innerHTML = '';
   document.getElementById('heatmap-build').innerHTML = '';
   buildHeatmaps();
+  // Mark all as built so scroll observer won't re-trigger
+  ['time-in-zone-chart','chart-dist','chart-dose','sparkline-grid','summary-tbody','heatmap-bullpen'].forEach(function(id) {
+    chartObserverBuilt[id] = true;
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════
+
+// Above-the-fold: build immediately
 populateKPIs();
 buildKeyFindings();
 createToggles('dist-toggle', buildDistChart);
 createToggles('dose-toggle', buildDoseChart);
-buildDistChart('all');
-buildDoseChart('all');
 buildTWABars();
-buildSparklines();
-buildTable();
-buildTimeInZone();
-buildHeatmaps();
+
+// Below-the-fold: defer until scrolled into view so animations play on arrival
+var chartObserverBuilt = {};
+var chartObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (!entry.isIntersecting) return;
+    var id = entry.target.id || entry.target.dataset.observe;
+    if (chartObserverBuilt[id]) return;
+    chartObserverBuilt[id] = true;
+    chartObserver.unobserve(entry.target);
+    if (id === 'time-in-zone-chart') buildTimeInZone();
+    else if (id === 'chart-dist') buildDistChart('all');
+    else if (id === 'chart-dose') buildDoseChart('all');
+    else if (id === 'sparkline-grid') buildSparklines();
+    else if (id === 'summary-tbody') buildTable();
+    else if (id === 'heatmap-bullpen') { buildHeatmaps(); }
+  });
+}, { rootMargin: '200px 0px', threshold: 0.01 });
+
+['time-in-zone-chart', 'chart-dist', 'chart-dose', 'sparkline-grid', 'summary-tbody', 'heatmap-bullpen'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) chartObserver.observe(el);
+});
 
 // ═══════════════════════════════════════════════════════════════
 // REVEAL ANIMATIONS (staggered fade+slide-up)
