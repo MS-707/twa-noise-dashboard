@@ -7,6 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>TWA Noise Exposure Assessment</title>
+<meta name="description" content="Interactive occupational noise exposure assessment dashboard. OSHA TWA analysis, dose calculations, and regulatory compliance evaluation with full methodology transparency.">
+<meta property="og:title" content="TWA Noise Exposure Assessment">
+<meta property="og:description" content="Interactive noise exposure analysis with OSHA TWA results, dose calculations, and verified methodology for construction site monitoring.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%236C2BD9' stroke-width='2'/%3E%3Cpath d='M10 20 Q16 8 22 20' fill='none' stroke='%236C2BD9' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -452,8 +457,8 @@ body {
   border-left: 3px solid var(--purple);
 }
 .chart-section .chart-desc {
-  font-size: 12px;
-  color: var(--text-muted);
+  font-size: 13px;
+  color: var(--text-secondary);
   margin-bottom: 16px;
 }
 .chart-wrap {
@@ -478,11 +483,11 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
-.date-btn:hover { border-color: var(--purple); color: var(--purple); }
+.date-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-lighter); }
 .date-btn.active {
   background: var(--purple);
   color: #fff;
@@ -1050,6 +1055,9 @@ svg text { font-family: 'Roboto', sans-serif; }
   outline-offset: 2px;
   border-radius: 4px;
 }
+.date-btn.active:focus-visible {
+  outline-color: var(--text);
+}
 
 /* ═══ REVEAL ANIMATIONS ═══ */
 @keyframes fadeSlideUp {
@@ -1091,8 +1099,10 @@ svg text { font-family: 'Roboto', sans-serif; }
   .hero h1 { font-size: 22px; }
   .hero .subtitle { font-size: 13px; }
   .page { padding: 16px 16px calc(48px + env(safe-area-inset-bottom)); }
-  .tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; position: relative; }
   .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-bar-wrap { position: relative; }
+  .tab-bar-wrap::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 32px; background: linear-gradient(to right, transparent, var(--bg)); pointer-events: none; z-index: 2; }
   .tab-btn { padding: 10px 16px; font-size: 13px; white-space: nowrap; flex-shrink: 0; }
   .loc-card { padding: 16px; }
   .chart-section { padding: 16px; }
@@ -1100,8 +1110,8 @@ svg text { font-family: 'Roboto', sans-serif; }
   .chart-wrap.tall { height: 320px; }
   .date-toggle { flex-wrap: wrap; }
   .date-btn { padding: 8px 10px; font-size: 11px; }
-  .summary-table { font-size: 12px; }
-  .summary-table thead th { font-size: 9px; padding: 8px 8px; }
+  .summary-table { font-size: 13px; }
+  .summary-table thead th { font-size: 11px; padding: 8px 8px; }
   .summary-table tbody td { padding: 10px 8px; }
   .faq-q { font-size: 13px; }
   .exp-card { padding: 16px; }
@@ -1164,10 +1174,12 @@ svg text { font-family: 'Roboto', sans-serif; }
     <h1>TWA Noise Exposure Assessment</h1>
     <div class="subtitle">Construction Site &mdash; California &bull; February 11&ndash;13, 2026 &bull; 2,926,709 readings analyzed</div>
     <div class="finding-badge finding-safe">All Locations Below OSHA 85 dBA Action Level</div>
+    <div class="tab-bar-wrap">
     <div class="tab-bar" role="tablist" aria-label="Dashboard sections">
       <button id="tab-assessment-btn" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-assessment" data-tab="assessment" onclick="switchTab('assessment')">Assessment</button>
       <button id="tab-methodology-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-methodology" data-tab="methodology" onclick="switchTab('methodology')">Methodology &amp; Verification</button>
       <button id="tab-guide-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-guide" data-tab="guide" onclick="switchTab('guide')">What This Means for You</button>
+    </div>
     </div>
   </div>
 </div>
@@ -1239,7 +1251,7 @@ svg text { font-family: 'Roboto', sans-serif; }
     <!-- NOISE EXPOSURE DURATION -->
     <div class="chart-section chart-card">
       <div class="chart-title">Noise Exposure Duration</div>
-      <div class="chart-desc">What percentage of each workday was spent in each noise zone? Stacked bars show time-in-zone for every location and date, computed from minute-level readings.</div>
+      <div class="chart-desc">What percentage of each shift was spent in each noise zone? Each bar totals 100% of the measured workday. Wider color bands indicate more time at that exposure level. Computed from minute-level readings.</div>
       <div class="exp-legend">
         <div class="exp-legend-item"><div class="exp-legend-dot" style="background:#16A34A"></div>&lt; 75 dBA</div>
         <div class="exp-legend-item"><div class="exp-legend-dot" style="background:var(--moderate)"></div>75&ndash;80 dBA</div>
@@ -2406,7 +2418,19 @@ function toggleDate(btn, containerId) {
 // EXPERIMENTAL TAB: D3 VISUALIZATIONS
 // ═══════════════════════════════════════════════════════════════
 const tooltip = d3.select('#tooltip');
-function showTip(evt, html) { tooltip.html(html).style('opacity', 1).style('left', (evt.pageX + 14) + 'px').style('top', (evt.pageY - 14) + 'px'); }
+function showTip(evt, html) {
+  tooltip.html(html).style('opacity', 1);
+  var tipNode = tooltip.node();
+  var tw = tipNode.offsetWidth || 200;
+  var th = tipNode.offsetHeight || 60;
+  var left = evt.pageX + 14;
+  var top = evt.pageY - 14;
+  if (left + tw > window.scrollX + window.innerWidth - 8) left = evt.pageX - tw - 14;
+  if (top + th > window.scrollY + window.innerHeight - 8) top = evt.pageY - th - 14;
+  if (left < window.scrollX + 8) left = window.scrollX + 8;
+  if (top < window.scrollY + 8) top = window.scrollY + 8;
+  tooltip.style('left', left + 'px').style('top', top + 'px');
+}
 function hideTip() { tooltip.style('opacity', 0); }
 
 function buildTimeInZone() {
