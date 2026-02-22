@@ -1996,6 +1996,8 @@ const thresholdPlugin = {
     const yScale = chart.scales.y;
     const xArea = chart.chartArea;
     if (!yScale || !xArea) return;
+    // Only draw on charts with numerical y-axis (dBA charts)
+    if (yScale.type !== 'linear') return;
 
     const zones = [
       { min: 85, max: 90, color: 'rgba(202,138,4,0.06)' },
@@ -2563,11 +2565,17 @@ function rebuildAssessmentCharts() {
   document.getElementById('sparkline-grid').innerHTML = '';
   buildSparklines();
   buildTable();
+  // Rebuild KPI daily chips (inline colors from C.*)
+  populateKPIs();
   // Rebuild time-in-zone chart
   var tzCanvas = document.getElementById('time-in-zone-chart');
   var tzInstance = Chart.getChart(tzCanvas);
   if (tzInstance) tzInstance.destroy();
   buildTimeInZone();
+  // Rebuild heatmaps (D3 SVGs with inline fill/stroke attributes)
+  document.getElementById('heatmap-bullpen').innerHTML = '';
+  document.getElementById('heatmap-build').innerHTML = '';
+  buildHeatmaps();
 }
 
 // ═══════════════════════════════════════════════════════════════
