@@ -327,39 +327,6 @@ body {
   border-radius: 10px;
   vertical-align: middle;
   margin-left: 8px;
-  cursor: help;
-  position: relative;
-}
-.ts-badge::after {
-  content: attr(data-tip);
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--text);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0;
-  text-transform: none;
-  line-height: 1.4;
-  padding: 8px 12px;
-  border-radius: 6px;
-  white-space: normal;
-  width: max-content;
-  max-width: 280px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-  z-index: 100;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-.ts-badge:hover::after,
-.ts-badge:focus::after {
-  opacity: 1;
-}
-@media (hover: none) {
-  .ts-badge::after { display: none; }
 }
 .ts-verified {
   background: var(--safe-light);
@@ -1155,7 +1122,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
     <div class="loc-grid">
       <div class="loc-card bullpen">
-        <div class="loc-name">Office / Bullpen Area <span class="ts-badge ts-verified" data-tip="Recording timestamps embedded in data files by hardware — clock times are accurate" aria-label="Verified Timestamps: recording timestamps embedded in data files by hardware, clock times are accurate" tabindex="0">Verified Timestamps</span></div>
+        <div class="loc-name">Office / Bullpen Area</div>
         <div class="loc-desc">Worker staging &amp; coordination &mdash; ambient exposure from nearby construction</div>
         <div class="metrics-row">
           <div class="metric"><div class="value" id="bp-twa">--</div><div class="label">OSHA TWA <span class="unit">dBA</span></div></div>
@@ -1166,7 +1133,7 @@ svg text { font-family: 'Roboto', sans-serif; }
         <div class="daily-strip" id="bp-daily"></div>
       </div>
       <div class="loc-card build">
-        <div class="loc-name">Construction / Build Area <span class="ts-badge ts-approximate" data-tip="Recording start time not embedded in data files — time-of-day alignment is estimated. Aggregate metrics (TWA, dose, Leq) remain valid." aria-label="Approximate Timestamps: recording start time not embedded in data files, time-of-day alignment is estimated, aggregate metrics remain valid" tabindex="0">Approximate Timestamps</span></div>
+        <div class="loc-name">Construction / Build Area</div>
         <div class="loc-desc">Active construction zone &mdash; direct exposure for build crew</div>
         <div class="metrics-row">
           <div class="metric"><div class="value" id="ba-twa">--</div><div class="label">OSHA TWA <span class="unit">dBA</span></div></div>
@@ -2173,10 +2140,7 @@ function buildTable() {
     const badge = r.osha_twa >= 90 ? 'danger' : r.osha_twa >= 85 ? 'caution' : 'safe';
     const statusText = r.osha_twa >= 90 ? 'Exceeds PEL' : r.osha_twa >= 85 ? 'Action Level' : 'Below AL';
     const locColor = r.location === 'Bullpen' ? C.bullpen : C.build;
-    const tsBadge = r.timestamp_source === 'hardware'
-      ? '<span class="ts-badge ts-verified" style="margin-left:4px;font-size:10px;padding:1px 5px;">Verified</span>'
-      : '<span class="ts-badge ts-approximate" style="margin-left:4px;font-size:10px;padding:1px 5px;">Approx.</span>';
-    return `<tr><td><strong style="color:${locColor}">${r.location}</strong>${tsBadge}</td><td>${DATE_LABELS[r.date]}</td><td><strong>${r.osha_twa}</strong></td><td>${r.osha_dose_pct}%</td><td>${r.leq}</td><td>${r.L10}</td><td>${r.L50}</td><td>${r.L90}</td><td>${r.L_max}</td><td>${r.niosh_twa}</td><td><span class="status-badge status-${badge}">${statusText}</span></td></tr>`;
+    return `<tr><td><strong style="color:${locColor}">${r.location}</strong></td><td>${DATE_LABELS[r.date]}</td><td><strong>${r.osha_twa}</strong></td><td>${r.osha_dose_pct}%</td><td>${r.leq}</td><td>${r.L10}</td><td>${r.L50}</td><td>${r.L90}</td><td>${r.L_max}</td><td>${r.niosh_twa}</td><td><span class="status-badge status-${badge}">${statusText}</span></td></tr>`;
   }).join('');
 }
 
