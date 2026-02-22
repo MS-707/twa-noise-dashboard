@@ -514,7 +514,7 @@ body {
 .sparkline-card {
   background: var(--bg-alt);
   border: 1px solid var(--border-light);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 14px 16px 10px;
 }
 .sparkline-header {
@@ -641,6 +641,11 @@ body {
   opacity: 0;
   transition: opacity 0.15s;
 }
+[data-theme="dark"] .d3-tooltip {
+  background: rgba(17,17,17,0.95);
+  border-color: rgba(255,255,255,0.08);
+  color: #E5E5E5;
+}
 
 svg text { font-family: 'Roboto', sans-serif; }
 
@@ -679,7 +684,7 @@ svg text { font-family: 'Roboto', sans-serif; }
   border-radius: 0 8px 8px 0;
   padding: 16px 20px;
   margin: 12px 0;
-  font-family: 'Roboto', monospace;
+  font-family: 'Roboto Mono', monospace;
   font-size: 15px;
   line-height: 2;
   overflow-x: auto;
@@ -835,7 +840,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 .guide-card {
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 24px 28px;
   margin-bottom: 20px;
 }
@@ -1044,8 +1049,8 @@ svg text { font-family: 'Roboto', sans-serif; }
     <div class="tab-bar-wrap">
     <div class="tab-bar" role="tablist" aria-label="Dashboard sections">
       <button id="tab-assessment-btn" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-assessment" data-tab="assessment" onclick="switchTab('assessment')">Assessment</button>
-      <button id="tab-methodology-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-methodology" data-tab="methodology" onclick="switchTab('methodology')">Methodology &amp; Verification</button>
       <button id="tab-guide-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-guide" data-tab="guide" onclick="switchTab('guide')">What This Means for You</button>
+      <button id="tab-methodology-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-methodology" data-tab="methodology" onclick="switchTab('methodology')">Methodology &amp; Verification</button>
       <button id="tab-about-btn" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-about" data-tab="about" onclick="switchTab('about')">About This Project</button>
     </div>
     </div>
@@ -1167,7 +1172,7 @@ svg text { font-family: 'Roboto', sans-serif; }
   </div>
 
 
-  <!-- ═══ TAB 3: METHODOLOGY & VERIFICATION ═══ -->
+  <!-- ═══ TAB 3: METHODOLOGY & VERIFICATION (visual tab order: 3rd) ═══ -->
   <div id="tab-methodology" class="tab-content" role="tabpanel" aria-labelledby="tab-methodology-btn">
 
     <!-- SECTION 00: INTRODUCTION -->
@@ -1563,7 +1568,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
   </div>
 
-  <!-- ═══ TAB 4: NON-TECHNICAL GUIDE ═══ -->
+  <!-- ═══ TAB 2: NON-TECHNICAL GUIDE (visual tab order: 2nd) ═══ -->
   <div id="tab-guide" class="tab-content" role="tabpanel" aria-labelledby="tab-guide-btn">
 
     <p style="font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:28px;">Over three days of continuous area monitoring in February 2026, noise levels observed at the Bullpen / office location were <strong>consistently below</strong> federal regulatory thresholds for hearing protection. Here is what that means in practice.</p>
@@ -1578,7 +1583,7 @@ svg text { font-family: 'Roboto', sans-serif; }
         <h4><span class="guide-icon guide-icon-safe">&#10003;</span> Observed area noise levels did not approach regulatory action thresholds</h4>
         <p>A professional-grade microphone was placed in the Bullpen area and recorded continuously for three full work days (February 11&ndash;13, 2026), capturing nearly one million individual sound level readings at a rate of 10 per second.</p>
         <p>The recorded levels were evaluated against two regulatory standards: the <strong>OSHA Permissible Exposure Limit (PEL)</strong> of 90 dBA and the more protective <strong>NIOSH Recommended Exposure Limit (REL)</strong> of 85 dBA. On every day measured, area noise levels were below both of these thresholds by a wide margin.</p>
-        <p style="font-size:13px;color:var(--text-muted);margin-top:12px;font-style:italic;">Note: This was an area monitoring assessment. Results reflect noise levels at the monitoring location and should not be interpreted as individual worker exposure determinations.</p>
+        <p style="font-size:13px;color:var(--text-secondary);margin-top:12px;font-style:italic;">Note: This was an area monitoring assessment. Results reflect noise levels at the monitoring location and should not be interpreted as individual worker exposure determinations.</p>
       </div>
 
       <div class="guide-comparison">
@@ -1699,7 +1704,7 @@ svg text { font-family: 'Roboto', sans-serif; }
 
   </div>
 
-  <!-- ═══ TAB 5: ABOUT THIS PROJECT ═══ -->
+  <!-- ═══ TAB 4: ABOUT THIS PROJECT (visual tab order: 4th) ═══ -->
   <div id="tab-about" class="tab-content" role="tabpanel" aria-labelledby="tab-about-btn">
 
     <p style="font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:28px;">This dashboard was built through a collaboration between a Certified Safety Professional and an AI assistant. Here is how it worked, what it means, and where the limitations are.</p>
@@ -1988,17 +1993,19 @@ function legendResetOnAllHidden(e, legendItem, legend) {
   if (allHidden) ci.data.datasets.forEach((ds, i) => { ci.getDatasetMeta(i).hidden = false; });
   ci.update();
 }
-const baseOptions = {
+function getBaseOptions() {
+  var isDark = document.documentElement.dataset.theme === 'dark';
+  return {
   responsive: true,
   maintainAspectRatio: false,
   animation: { duration: 800, easing: 'easeOutQuart' },
   plugins: {
     legend: { display: false },
     tooltip: {
-      backgroundColor: 'rgba(15,23,42,0.92)',
-      titleColor: '#f1f5f9',
-      bodyColor: '#e2e8f0',
-      borderColor: 'rgba(255,255,255,0.1)',
+      backgroundColor: isDark ? 'rgba(17,17,17,0.95)' : 'rgba(15,23,42,0.92)',
+      titleColor: isDark ? '#E5E5E5' : '#f1f5f9',
+      bodyColor: isDark ? '#A3A3A3' : '#e2e8f0',
+      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.1)',
       borderWidth: 1,
       titleFont: { family: 'Roboto', size: 12, weight: 600 },
       bodyFont: { family: 'Roboto', size: 12 },
@@ -2018,7 +2025,8 @@ const baseOptions = {
       border: { display: false },
     },
   },
-};
+  };
+}
 
 // ═══════════════════════════════════════════════════════════════
 // ASSESSMENT TAB: KPIs
@@ -2051,7 +2059,7 @@ function populateKPIs() {
     const recs = idx === 0 ? bp : ba;
     const el = document.getElementById(prefix + '-daily');
     el.innerHTML = recs.map((r, i) => {
-      const color = r.osha_twa >= 90 ? C.danger : r.osha_twa >= 85 ? C.caution : r.osha_twa >= 80 ? '#EA580C' : C.safe;
+      const color = r.osha_twa >= 90 ? C.danger : r.osha_twa >= 85 ? C.caution : r.osha_twa >= 80 ? C.elevated : C.safe;
       return `<div class="daily-chip"><div class="day">${DATE_LABELS[r.date]}</div><div class="twa-val" style="color:${color}"><span class="daily-num" id="${prefix}-d${i}">0</span> <span class="twa-unit">dBA</span></div></div>`;
     }).join('');
     recs.forEach((r, i) => {
@@ -2112,8 +2120,8 @@ function buildDistChart(selectedDate) {
     type: 'bar',
     data: { labels: filtered.map(c => c.toFixed(0)), datasets },
     options: {
-      ...baseOptions,
-      plugins: { ...baseOptions.plugins, legend: { display: true, position: 'top', onClick: legendResetOnAllHidden, labels: { usePointStyle: true, pointStyle: 'rect', padding: 16, color: C.axisLabel, font: { family: 'Roboto', size: 11 } } } },
+      ...getBaseOptions(),
+      plugins: { ...getBaseOptions().plugins, legend: { display: true, position: 'top', onClick: legendResetOnAllHidden, labels: { usePointStyle: true, pointStyle: 'rect', padding: 16, color: C.axisLabel, font: { family: 'Roboto', size: 11 } } } },
       scales: {
         x: { grid: { display: false }, ticks: { maxTicksLimit: 12, font: { family: 'Roboto', size: 10 }, color: C.tick, callback: function(val, idx) { const v = filtered[idx]; return v % 5 === 0 ? v : ''; } }, title: { display: true, text: 'Sound Level (dBA)', font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel } },
         y: { grid: { color: C.grid }, ticks: { font: { family: 'Roboto', size: 10 }, color: C.tick }, border: { display: false }, title: { display: true, text: 'Count', font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel } },
@@ -2140,8 +2148,8 @@ function buildDoseChart(selectedDate) {
   doseChart = new Chart(ctx, {
     type: 'line', data: { datasets },
     options: {
-      ...baseOptions,
-      plugins: { ...baseOptions.plugins, legend: { display: true, position: 'top', labels: { usePointStyle: true, padding: 12, color: C.axisLabel, font: { family: 'Roboto', size: 10 } } } },
+      ...getBaseOptions(),
+      plugins: { ...getBaseOptions().plugins, legend: { display: true, position: 'top', labels: { usePointStyle: true, padding: 12, color: C.axisLabel, font: { family: 'Roboto', size: 10 } } } },
       scales: {
         x: { type: 'linear', min: 0, max: 480, grid: { display: false }, ticks: { stepSize: 60, font: { family: 'Roboto', size: 10 }, color: C.tick, callback: v => (v/60) + 'h' }, title: { display: true, text: 'Time into Shift', font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel } },
         y: { min: 0, grid: { color: C.grid }, ticks: { font: { family: 'Roboto', size: 10 }, color: C.tick, callback: v => v + '%' }, border: { display: false }, title: { display: true, text: 'Cumulative Dose %', font: { family: 'Roboto', size: 12, weight: 500 }, color: C.axisLabel } },
@@ -2165,8 +2173,8 @@ function buildTWABars() {
       ],
     },
     options: {
-      ...baseOptions,
-      plugins: { ...baseOptions.plugins, legend: { display: true, position: 'top', onClick: legendResetOnAllHidden, labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, color: C.axisLabel, font: { family: 'Roboto', size: 12 } } }, tooltip: { ...baseOptions.plugins.tooltip, callbacks: { label: item => item.dataset.label + ': ' + item.raw + ' dBA' } } },
+      ...getBaseOptions(),
+      plugins: { ...getBaseOptions().plugins, legend: { display: true, position: 'top', onClick: legendResetOnAllHidden, labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, color: C.axisLabel, font: { family: 'Roboto', size: 12 } } }, tooltip: { ...getBaseOptions().plugins.tooltip, callbacks: { label: item => item.dataset.label + ': ' + item.raw + ' dBA' } } },
       scales: {
         x: { grid: { display: false }, ticks: { font: { family: 'Roboto', size: 13, weight: 600 }, color: C.axisLabel } },
         y: { min: 50, max: 95, grid: { color: C.grid }, ticks: { stepSize: 5, font: { family: 'Roboto', size: 11 }, color: C.tick, callback: v => v + ' dBA' }, border: { display: false } },
@@ -2313,7 +2321,7 @@ function buildTimeInZone() {
       })),
     },
     options: {
-      ...baseOptions,
+      ...getBaseOptions(),
       indexAxis: 'y',
       layout: { padding: { left: 8 } },
       animation: {
@@ -2329,9 +2337,9 @@ function buildTimeInZone() {
         y: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Roboto', size: 11, weight: 500 }, color: C.tick, padding: 4 } },
       },
       plugins: {
-        ...baseOptions.plugins,
+        ...getBaseOptions().plugins,
         tooltip: {
-          ...baseOptions.plugins.tooltip,
+          ...getBaseOptions().plugins.tooltip,
           callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw + '%' },
         },
       },

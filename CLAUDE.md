@@ -1,4 +1,4 @@
-# TWA Noise Exposure Assessment Dashboard
+# Noise Exposure Assessment Dashboard
 
 ## Project Overview
 Single-file HTML dashboard (`index.html`, ~2600 lines) for presenting occupational noise exposure data to an ELT (executive leadership team) audience. Deployed on Vercel via GitHub auto-deploy from `MS-707/twa-noise-dashboard` (main branch).
@@ -14,16 +14,17 @@ Single-file HTML dashboard (`index.html`, ~2600 lines) for presenting occupation
 - **D3.js 7.9.0** for heatmaps and sparklines
 - **CSS custom properties** for light/dark theming (`--bg`, `--card`, `--purple`, etc.)
 - **`getC()` function** reads CSS vars at runtime so charts are theme-reactive
+- **`getBaseOptions()` function** returns fresh Chart.js base config with theme-aware tooltip colors
 - **`rebuildAssessmentCharts()`** destroys and rebuilds all Chart.js + D3 charts on theme toggle
 - All data is embedded inline (`DATA.summary`, `HEATMAP_DATA`, `DATE_LABELS`)
 
 ## File Structure
 Everything is in `index.html`:
-1. **Lines 1-18**: Head, meta tags, CDN scripts (Chart.js, D3, date-fns adapter with SRI hashes)
-2. **Lines 19-1150**: `<style>` block (CSS variables, components, responsive breakpoints, print styles)
-3. **Lines 1151-1850**: HTML structure (header, hero, 3 tab panels, footer, tooltip div)
-4. **Lines 1851-1870**: `getC()` color function and embedded data objects
-5. **Lines 1870-2600**: JavaScript (chart builders, toggles, theme system, animations, init)
+1. **Lines 1-23**: Head, meta tags, CDN scripts (Chart.js, D3, date-fns adapter with SRI hashes)
+2. **Lines 24-1040**: `<style>` block (CSS variables, components, responsive breakpoints)
+3. **Lines 1040-1850**: HTML structure (header, hero, 4 tab panels, footer, tooltip div)
+4. **Lines 1830-1870**: `getC()` color function and embedded data objects
+5. **Lines 1870-2500+**: JavaScript (chart builders, toggles, theme system, animations, init)
 
 ## Tab Structure & Section Order
 
@@ -31,18 +32,21 @@ Everything is in `index.html`:
 1. **Key Findings** (`#key-findings`) - Auto-generated compliance summary
 2. **Location Cards** (`.loc-grid`) - KPI cards for Bullpen + Build Area
 3. **Daily TWA Comparison** (`#chart-twa-bars`) - Bar chart, the headline number
-4. **Hourly Noise Levels** (`#chart-overlay`) - Line chart with location/date toggles
-5. **Noise Exposure Duration** (`#time-in-zone-chart`) - Stacked bars showing time-in-zone
-6. **Distribution + Dose** (`.chart-row`) - Side-by-side histogram and dose accumulation
-7. **Sparklines** (`#sparkline-grid`) - Mini dose profiles per location/date
-8. **Results Table** (`#summary-tbody`) - Full metrics table
-9. **Heatmaps** (`#heatmap-bullpen`, `#heatmap-build`) - Minute-level D3 heatmaps
+4. **Noise Exposure Duration** (`#time-in-zone-chart`) - Stacked bars showing time-in-zone
+5. **Distribution + Dose** (`.chart-row`) - Side-by-side histogram and dose accumulation
+6. **Sparklines** (`#sparkline-grid`) - Mini dose profiles per location/date
+7. **Results Table** (`#summary-tbody`) - Full metrics table
+8. **Heatmaps** (`#heatmap-bullpen`, `#heatmap-build`) - Minute-level D3 heatmaps
 
-### Methodology Tab (`#tab-methodology`)
+### Guide Tab (`#tab-guide`) — visual order: 2nd tab
+- Plain-language "What This Means for You" for non-technical readers
+- Hearing biology explainer, common concerns Q&A, scope of assessment
+
+### Methodology Tab (`#tab-methodology`) — visual order: 3rd tab
 - Instrumentation, mathematical framework, cross-validation checks, FAQ
 
-### Guide Tab (`#tab-guide`)
-- Plain-language "What This Means for You" for non-technical readers
+### About Tab (`#tab-about`) — visual order: 4th tab
+- CSP + AI collaboration story, technical examples, limitations and transparency
 
 ## Theme System
 - Light: white backgrounds, slate text, purple accent
