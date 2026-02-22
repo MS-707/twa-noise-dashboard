@@ -1224,6 +1224,12 @@ svg text { font-family: 'Roboto', sans-serif; }
     </div>
 
     <div class="chart-section chart-card">
+      <div class="chart-title">Daily TWA Comparison</div>
+      <div class="chart-desc">OSHA TWA by date for each monitoring location, with regulatory threshold reference lines</div>
+      <div class="chart-wrap"><canvas id="chart-twa-bars" role="img" aria-label="Bar chart comparing daily OSHA Time-Weighted Average values by location with regulatory threshold lines"></canvas></div>
+    </div>
+
+    <div class="chart-section chart-card">
       <div class="chart-title">Hourly Noise Levels &mdash; L<sub>eq</sub> by Hour of Day</div>
       <div class="chart-desc">Toggle location to view each microphone independently or overlaid. Toggle dates to compare day-over-day patterns.</div>
       <div class="date-toggle" id="loc-toggle" style="margin-bottom:8px;">
@@ -1243,12 +1249,6 @@ svg text { font-family: 'Roboto', sans-serif; }
         <div class="threshold-item"><div class="tline" style="border-color:var(--caution)"></div>85 dBA Action Level</div>
         <div class="threshold-item"><div class="tline" style="border-color:var(--text-muted)"></div>80 dBA Threshold</div>
       </div>
-    </div>
-
-    <div class="chart-section chart-card">
-      <div class="chart-title">Daily TWA Comparison</div>
-      <div class="chart-desc">OSHA TWA by date for each monitoring location, with regulatory threshold reference lines</div>
-      <div class="chart-wrap"><canvas id="chart-twa-bars" role="img" aria-label="Bar chart comparing daily OSHA Time-Weighted Average values by location with regulatory threshold lines"></canvas></div>
     </div>
 
     <!-- NOISE EXPOSURE DURATION -->
