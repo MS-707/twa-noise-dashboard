@@ -8,7 +8,7 @@ A single-page interactive dashboard for occupational noise exposure analysis, bu
 
 ## What This Project Demonstrates
 
-This dashboard was built entirely through a collaboration between a Certified Safety Professional (CSP) and **Claude Code** (Anthropic's agentic CLI tool, powered by Claude Opus 4.6). The CSP is not a software developer. Prior to this project, their coding experience was limited to what's sometimes called "vibe coding" — learning to direct AI tools toward professional goals over the past year.
+This dashboard was built entirely through a collaboration between a Certified Safety Professional (CSP) and **Claude Code** (Anthropic's agentic CLI tool, powered by Claude Opus 4.6). 
 
 This project is a case study in what happens when domain expertise meets an AI agent that can execute: a single EHS practitioner, working from raw field data, produced a peer-reviewable, interactive, version-controlled noise exposure analysis — something that traditionally requires specialized software, consultant engagements, or both.
 
