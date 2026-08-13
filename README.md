@@ -45,7 +45,7 @@ With Claude Code as a working partner, a single practitioner was able to:
 
 This was not a one-directional process. The CSP's domain knowledge shaped every decision:
 
-- **Caught a formula error** — Claude initially applied NIOSH's 3 dB exchange rate where OSHA's 5 dB rate was required. The CSP identified the discrepancy from regulatory knowledge, not from reading the code.
+- **Caught a formula error** — Claude initially applied OSHA's 5 dB exchange rate (the 16.61·log₁₀ constant) to the NIOSH TWA calculation. The CSP identified the discrepancy from regulatory knowledge — NIOSH uses a 3 dB rate — not from reading the code. Corrected NIOSH values shifted by up to 1.4 dBA ([commit ca4cb45](https://github.com/MS-707/twa-noise-dashboard/commit/ca4cb45ac5)).
 - **Rejected misleading chart types** — Claude proposed ridgeline plots, dumbbell charts (L10/L50/L90 comparisons), and polar/radial charts. The CSP vetoed each one: executives don't read statistical distributions. Time-in-zone stacked bars replaced all of them.
 - **Softened alarming language** — The initial dashboard labeled the >90 dBA zone as "Dangerous" in red. The CSP pointed out that zero time was spent in that zone — alarming language for a non-event undermines credibility with executive audiences. Changed to "90+ dBA" in amber.
 - **Identified a data artifact** — A 1-minute recording at hour 16 on one date created a misleading visual dip. The CSP recognized this as a partial-hour artifact from field conditions, not a real noise event. The data point was nulled and the hourly chart was ultimately removed as unnecessary for the compliance narrative.
@@ -56,7 +56,7 @@ This was not a one-directional process. The CSP's domain knowledge shaped every 
 
 1. **Mathematical rigor without a math background.** The dashboard includes complete derivations of Leq, OSHA dose, NIOSH dose, TWA conversions, and statistical percentiles. Claude explained the exchange rate differences between OSHA (5 dB) and NIOSH (3 dB), why Jensen's inequality validates Leq calculations, and why TWA < Leq when a threshold is applied. An EHS generalist can now engage with acoustics math at a level that previously required specialized training.
 
-2. **Verification as a first-class concern.** The Python verification script runs 7 independent cross-checks per data file — Jensen's inequality, Leq recomputation, dose recomputation, TWA back-calculation, sample count verification, percentile ordering, and NIOSH >= OSHA consistency. 21 checks across 910,393 data points, all passing. This level of self-validation is unusual even in consultant deliverables.
+2. **Verification as a first-class concern.** The Python verification script runs 7 independent cross-checks per data file — Jensen's inequality, Leq ≤ Lmax bounds, Leq recomputation, dose recomputation, TWA back-calculation, sample count verification, and percentile ordering — with NIOSH ≥ OSHA consistency as an additional cross-standard invariant. 21 checks across the 910,393 Bullpen data points, all passing. This level of self-validation is unusual even in consultant deliverables.
 
 3. **Transparent limitations.** The dashboard explicitly discloses methodological limitations — from timestamp assumptions to the distinction between area monitoring and personal dosimetry. This kind of candor is standard in academic publishing but rare in operational EHS reports.
 
@@ -108,7 +108,7 @@ This was not a one-directional process. The CSP's domain knowledge shaped every 
 
 The EHS profession has a tooling gap. Industrial hygiene calculations are well-defined (the math hasn't changed since the 1970s) but the tools to perform, verify, and present that math remain locked behind expensive licenses or consultant relationships. Most in-house EHS teams operate with Excel spreadsheets and institutional knowledge.
 
-AI agents don't replace the expertise — they remove the *implementation barrier*. An EHS professional who understands what a TWA means and why it matters, who knows the difference between area monitoring and personal dosimetry, who can catch a formula using the wrong exchange rate — that person can now produce a verified, transparent, interactive analysis from raw field data. Not in weeks. In an afternoon.
+AI agents don't replace the expertise — they remove the *implementation barrier*. An EHS professional who understands what a TWA means and why it matters, who knows the difference between area monitoring and personal dosimetry, who can catch a formula using the wrong exchange rate — that person can now produce a verified, transparent, interactive analysis from raw field data. Not in weeks. In days.
 
 The CSP who built this is not a developer. They learned to direct AI tools toward professional goals. The result isn't a shortcut — it's a higher standard of what one practitioner can produce: peer-reviewable, version-controlled, publicly deployable, with full methodological documentation and honest limitations disclosure.
 
@@ -118,7 +118,7 @@ That's the force multiplication. Not cheaper. Better.
 
 ## License
 
-Assessment data is from an actual workplace noise study (February 2026). Equipment specifications and regulatory thresholds are public domain (OSHA, NIOSH).
+Assessment data is from an actual workplace noise study (February 2026). Equipment specifications and regulatory thresholds are public domain (OSHA, NIOSH). No open-source license is applied at this time — all rights reserved.
 
 ---
 
